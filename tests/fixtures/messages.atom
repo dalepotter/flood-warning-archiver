@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://cap-xml.prd.defra.cloud/v2/messages.atom</id>
+    <title>Flood warnings for England</title>
+    <updated>2026-11-03T12:56:00.000Z</updated>
+    <generator>Environment Agency CAP XML flood warnings</generator>
+    <author>
+        <name>Environment Agency</name>
+        <email>enquiries@environment-agency.gov.uk</email>
+        <uri>https://www.gov.uk/government/organisations/environment-agency</uri>
+    </author>
+    <rights>Copyright, Environment Agency. Licensed under Creative Commons BY 4.0</rights>
+    <entry>
+        <title type="html"><![CDATA[054WATBT1]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/132514</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/132514"/>
+        <updated>2026-11-02T09:35:32.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[054WATBT1]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/132508</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/132508"/>
+        <updated>2026-11-01T15:44:20.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[063WAT23West]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/132457</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/132457"/>
+        <updated>2026-10-29T09:38:14.000Z</updated>
+    </entry>
+</feed>
