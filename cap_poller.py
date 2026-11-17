@@ -2,7 +2,9 @@
 """Poll the Environment Agency CAP ATOM feed and archive new CAP messages as raw XML."""
 
 import logging
+import os
 import re
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -72,3 +74,35 @@ def parse_feed(xml_bytes: bytes) -> list[FeedEntry]:
     if raw_entries and not entries:
         raise FeedParseError("Feed has entries but none has a usable message id (format change?)")
     return entries
+
+
+def message_path(warnings_dir: Path, message_id: str) -> Path:
+    """Path of the archived file for a message ID. Rejects anything that isn't all digits."""
+    if not MESSAGE_ID_PATTERN.fullmatch(message_id):
+        raise ValueError(f"Invalid message id: {message_id!r}")
+    return Path(warnings_dir) / f"{message_id}.xml"
+
+
+def is_stored(warnings_dir: Path, message_id: str) -> bool:
+    return message_path(warnings_dir, message_id).exists()
+
+
+def save_message(warnings_dir: Path, message_id: str, content: bytes) -> bool:
+    """Write the raw bytes unchanged. Returns False (and writes nothing) if already stored.
+
+    Writes to a temporary file in the same folder and renames it, so an interrupted run
+    can never leave a half-written .xml file behind to be committed.
+    """
+    path = message_path(warnings_dir, message_id)
+    if path.exists():
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as tmp:
+            tmp.write(content)
+        os.replace(tmp_name, path)
+    except BaseException:
+        Path(tmp_name).unlink(missing_ok=True)
+        raise
+    return True

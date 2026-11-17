@@ -22,3 +22,9 @@ pytest
 
 1. Read the EA CAP ATOM feed. The feed is only an index: each entry points at a full CAP message.
    Message IDs are validated as digits only, because they become filenames.
+
+## Archive layout
+
+Each CAP message is stored unchanged as `warnings/<message-id>.xml`, where the ID is the number in the
+message URL (`/v2/message/<id>`). Files are never overwritten: if an ID is already archived it is not
+fetched again.
