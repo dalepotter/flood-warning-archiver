@@ -21,3 +21,4 @@ pytest
 ## How it works
 
 1. Read the EA CAP ATOM feed. The feed is only an index: each entry points at a full CAP message.
+   Message IDs are validated as digits only, because they become filenames.
