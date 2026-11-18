@@ -137,3 +137,60 @@ def test_unrelated_files_in_the_archive_folder_are_ignored(make_feed, alert_xml,
     responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
     responses.add(responses.GET, message_url("132508"), body=alert_xml)
     assert poll_once(warnings_dir).new_ids == ["132508"]
+
+
+@responses.activate
+def test_referenced_message_missing_from_the_feed_is_archived(make_feed, alert_xml, cancel_xml, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132514"]))  # the Cancel only
+    responses.add(responses.GET, message_url("132514"), body=cancel_xml)
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)  # referenced by the Cancel
+
+    result = poll_once(warnings_dir)
+
+    assert sorted(result.new_ids) == ["132508", "132514"]
+    assert (warnings_dir / "132508.xml").read_bytes() == alert_xml
+
+
+@responses.activate
+def test_unretrievable_reference_is_recorded_but_is_not_a_failure(make_feed, cancel_xml, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132514"]))
+    responses.add(responses.GET, message_url("132514"), body=cancel_xml)
+    responses.add(responses.GET, message_url("132508"), status=404)
+
+    result = poll_once(warnings_dir)
+
+    assert result.new_ids == ["132514"]
+    assert "132508" in result.unavailable_references
+    assert result.failed == {}
+
+
+@responses.activate
+def test_already_archived_reference_is_not_refetched_or_listed_as_in_the_feed(
+    make_feed, alert_xml, cancel_xml, warnings_dir
+):
+    save_message(warnings_dir, "132508", alert_xml)
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132514"]))
+    responses.add(responses.GET, message_url("132514"), body=cancel_xml)
+
+    result = poll_once(warnings_dir)
+
+    assert result.new_ids == ["132514"]
+    assert result.already_stored == []
+    assert [c.request.url for c in responses.calls] == [FEED_URL, message_url("132514")]
+
+
+@responses.activate
+def test_reference_cycles_terminate(make_feed, warnings_dir):
+    a = (
+        b'<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2"><references>'
+        b"s,2.49.0.1.826.1.20261101000000.2,2026-11-01T00:00:00+00:00</references></alert>"
+    )
+    b = (
+        b'<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2"><references>'
+        b"s,2.49.0.1.826.1.20261101000000.1,2026-11-01T00:00:00+00:00</references></alert>"
+    )
+    responses.add(responses.GET, FEED_URL, body=make_feed(["1"]))
+    responses.add(responses.GET, message_url("1"), body=a)
+    responses.add(responses.GET, message_url("2"), body=b)
+
+    assert sorted(poll_once(warnings_dir).new_ids) == ["1", "2"]

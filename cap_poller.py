@@ -175,26 +175,62 @@ class PollResult:
     new_ids: list[str] = field(default_factory=list)
     already_stored: list[str] = field(default_factory=list)
     failed: dict[str, str] = field(default_factory=dict)  # message id -> reason
+    unavailable_references: dict[str, str] = field(default_factory=dict)  # not a failure
+
+
+def referenced_message_ids(content: bytes) -> list[str]:
+    """Message numbers named in a CAP <references> element.
+
+    references is a whitespace-separated list of 'sender,identifier,sent' triples, and the
+    identifier ends in the message number ('2.49.0.1.826.1.20261101154420.132508' -> '132508').
+    """
+    root = ET.fromstring(content)
+    text = root.findtext(f"{{{CAP_NS}}}references") or ""
+    ids = []
+    for triple in text.split():
+        parts = triple.split(",")
+        if len(parts) != 3:
+            continue
+        message_id = parts[1].rsplit(".", 1)[-1]
+        if MESSAGE_ID_PATTERN.fullmatch(message_id) and message_id not in ids:
+            ids.append(message_id)
+    return ids
 
 
 def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | None = None) -> PollResult:
-    """Fetch the index, then fetch, validate and save every message not yet archived."""
+    """Fetch the index, then fetch, validate and save every message not yet archived.
+
+    Messages named in the `references` of a newly archived message are fetched too, because
+    superseded messages can leave the index while remaining retrievable by ID.
+    """
     session = session or requests.Session()
     entries = parse_feed(fetch(FEED_URL, session))
     result = PollResult()
-    for entry in entries:
-        if is_stored(warnings_dir, entry.message_id):
-            result.already_stored.append(entry.message_id)
+    pending = [(entry.message_id, False) for entry in entries]  # (id, found via references?)
+    seen: set[str] = set()
+    while pending:
+        message_id, via_reference = pending.pop(0)
+        if message_id in seen:
+            continue
+        seen.add(message_id)
+        if is_stored(warnings_dir, message_id):
+            if not via_reference:
+                result.already_stored.append(message_id)
             continue
         try:
-            content = fetch(message_url(entry.message_id), session)
+            content = fetch(message_url(message_id), session)
             validate_cap_message(content)
         except (FetchError, InvalidMessageError) as exc:
-            logger.error("Not archiving message %s: %s", entry.message_id, exc)
-            result.failed[entry.message_id] = str(exc)
+            if via_reference:
+                logger.warning("Referenced message %s is not retrievable: %s", message_id, exc)
+                result.unavailable_references[message_id] = str(exc)
+            else:
+                logger.error("Not archiving message %s: %s", message_id, exc)
+                result.failed[message_id] = str(exc)
             continue
-        save_message(warnings_dir, entry.message_id, content)
-        result.new_ids.append(entry.message_id)
+        save_message(warnings_dir, message_id, content)
+        result.new_ids.append(message_id)
+        pending.extend((ref, True) for ref in referenced_message_ids(content))
     return result
 
 
@@ -205,6 +241,7 @@ def format_summary(result: PollResult) -> str:
         f"- New messages archived: {len(result.new_ids)}",
         f"- Already archived: {len(result.already_stored)}",
         f"- Failed: {len(result.failed)}",
+        f"- Referenced but unavailable: {len(result.unavailable_references)}",
     ]
     if result.new_ids:
         lines += ["", "### New", *[f"- {message_id}" for message_id in result.new_ids]]

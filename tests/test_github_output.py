@@ -33,3 +33,9 @@ def test_summary_lists_new_message_ids():
     text = format_summary(PollResult(new_ids=["132562", "132570"]))
     assert "- 132562" in text
     assert "- 132570" in text
+
+
+def test_summary_reports_unavailable_references_without_calling_them_failures():
+    text = format_summary(PollResult(unavailable_references={"132508": "HTTP 404"}))
+    assert "Referenced but unavailable: 1" in text
+    assert "Failed: 0" in text

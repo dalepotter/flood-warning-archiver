@@ -10,7 +10,9 @@ repository.
 
 1. Read the EA CAP ATOM feed (`https://cap-xml.prd.defra.cloud/v2/messages.atom`). The feed is only an
    index: each entry points at a full CAP message and carries no warning content.
-2. For every entry whose message ID is not already in `warnings/`, fetch `/v2/message/<id>`.
+2. For every entry whose message ID is not already in `warnings/`, fetch `/v2/message/<id>`. Messages
+   named in a fetched message's `references` are fetched too if they are not yet archived, because
+   superseded messages can leave the index while remaining retrievable.
 3. Check the response is a CAP 1.2 `alert` (so an error page is never archived).
 4. Save the bytes **exactly as received** as `warnings/<id>.xml`. Existing files are never overwritten.
 
@@ -83,8 +85,8 @@ This is an unofficial archive of a service for which EA has not published consum
 limit or a service level agreement.
 
 - **Messages can leave the feed before we see them.** Entries have been observed to disappear from the
-  index while the message stayed retrievable. With hourly polling, a message superseded within the hour
-  may never appear in the index. The archive is therefore best-effort, not guaranteed complete.
+  index while the message stayed retrievable. Following `references` recovers most, but not necessarily
+  all, of them, so the archive is best-effort, not guaranteed complete.
 - **Immutability is assumed, not confirmed.** Each message is fetched once and never re-checked.
 - **Absence from the feed does not mean a warning has been withdrawn.** Withdrawals are published as new
   messages (`msgType` `Cancel`, with `references`). Do not use this archive to decide what is currently in
