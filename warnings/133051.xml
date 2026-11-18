@@ -1,0 +1,75 @@
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>2.49.0.1.826.1.20261117123151.133051</identifier>
+  <sender>www.gov.uk/environment-agency</sender>
+  <sent>2026-11-17T12:31:51+00:00</sent>
+  <status>Actual</status>
+  <msgType>Alert</msgType>
+  <source>Flood warning service</source>
+  <scope>Public</scope>
+  <code>MCP:v2.0</code>
+  <info>
+    <language>en-GB</language>
+    <category>Met</category>
+    <event>Flood Warning: River Cole at Coleshill</event>
+    <responseType>Monitor</responseType>
+    <urgency>Immediate</urgency>
+    <severity>Severe</severity>
+    <certainty>Likely</certainty>
+    <onset>2026-11-17T12:31:51+00:00</onset>
+    <expires>2026-11-19T12:31:51+00:00</expires>
+    <senderName>Environment Agency</senderName>
+    <headline>Flooding is expected: River Cole at Coleshill</headline>
+    <description><![CDATA[Rising river levels are causing flooding today. 
+
+Flooding is expected on Tuesday 17 November . 
+
+Flooding may affect properties and roads around Station Road, Coleshill. 
+
+We are closely monitoring the situation monitoring rainfall and river levels. 
+
+Start acting on your flood plan if you have one. Activate any flood protection products you may have. 
+
+This message will be updated by 11:00AM on Wednesday 18 November or as the situation changes.]]></description>
+    <instruction><![CDATA[Act now 
+ 
+You should: 
+- go to Check for flooding for a map of the area and to monitor up-to-date local flood information – https://check-for-flooding.service.gov.uk/target-area/033FWF3COLE001  
+- act on your personal flood plan if you have one - https://www.gov.uk/government/publications/personal-flood-plan 
+- follow the guidance in 'What to do before or during a flood' - https://www.gov.uk/help-during-flood  
+ 
+You can also read more about what flood warnings are – https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#flood-warning 
+ 
+Stay up to date 
+ 
+To get the latest flood information, you can: 
+- go to Check for flooding 
+- monitor local weather, news and travel updates 
+- call Floodline on 0345 988 1188, using quickdial code 308058]]></instruction>
+    <web>https://check-for-flooding.service.gov.uk</web>
+    <contact>0345 988 1188</contact>
+    <parameter>
+      <valueName>awareness_level</valueName>
+      <value>3; orange; Severe</value>
+    </parameter>
+    <parameter>
+      <valueName>awareness_type</valueName>
+      <value>12; Flooding</value>
+    </parameter>
+    <parameter>
+      <valueName>impacts</valueName>
+      <value>Flooding is expected - act now</value>
+    </parameter>
+    <parameter>
+      <valueName>use_polygon_over_geocode</valueName>
+      <value>true</value>
+    </parameter>
+    <parameter>
+      <valueName>uk_ea_ta_code</valueName>
+      <value>033FWF3COLE001</value>
+    </parameter>
+    <area>
+      <areaDesc><![CDATA[River Cole at Coleshill]]></areaDesc>
+      <polygon>52.51457,-1.709 52.51504,-1.70841 52.5158,-1.70756 52.51591,-1.70774 52.51603,-1.70782 52.5164,-1.70767 52.51621,-1.70495 52.51615,-1.70271 52.51339,-1.70278 52.51322,-1.70314 52.51322,-1.70343 52.51332,-1.70364 52.51327,-1.70419 52.51316,-1.7047 52.51297,-1.70483 52.51282,-1.70505 52.51278,-1.70533 52.51287,-1.7056 52.51278,-1.70619 52.51242,-1.70646 52.51242,-1.70653 52.51218,-1.7067 52.51182,-1.70668 52.51158,-1.70659 52.51124,-1.70662 52.51021,-1.70624 52.51003,-1.7063 52.50968,-1.70654 52.5095,-1.7065 52.50939,-1.70645 52.50921,-1.70615 52.50909,-1.7061 52.50879,-1.70606 52.50828,-1.70565 52.50804,-1.70527 52.50783,-1.70486 52.50772,-1.70428 52.5078,-1.70412 52.50797,-1.70346 52.50791,-1.70345 52.50752,-1.70324 52.5072,-1.70324 52.50713,-1.70344 52.50729,-1.70397 52.50734,-1.70426 52.50734,-1.70443 52.50714,-1.70509 52.50666,-1.70488 52.50648,-1.70514 52.50628,-1.70554 52.50599,-1.70596 52.50572,-1.70608 52.5054,-1.70615 52.50507,-1.70602 52.50471,-1.70568 52.50444,-1.7056 52.5041,-1.70567 52.50385,-1.70555 52.50364,-1.70581 52.50339,-1.70675 52.50338,-1.70707 52.50271,-1.70666 52.50242,-1.70703 52.50235,-1.7074 52.50225,-1.70749 52.50209,-1.70796 52.50203,-1.70833 52.50219,-1.70867 52.50216,-1.70892 52.50218,-1.70921 52.50211,-1.70961 52.50221,-1.71019 52.50249,-1.7103 52.50241,-1.71067 52.50241,-1.71097 52.50265,-1.71005 52.50252,-1.70995 52.50284,-1.70876 52.50295,-1.70809 52.50338,-1.70796 52.50361,-1.70807 52.5039,-1.70835 52.50406,-1.70871 52.50432,-1.70964 52.5045,-1.71019 52.5048,-1.7107 52.50498,-1.71041 52.50491,-1.71017 52.50477,-1.70991 52.50466,-1.70979 52.50467,-1.70952 52.50481,-1.70942 52.5048,-1.70918 52.50488,-1.70912 52.50485,-1.7087 52.50473,-1.7082 52.50496,-1.70811 52.50513,-1.70793 52.50496,-1.70765 52.50525,-1.70746 52.50536,-1.70722 52.50571,-1.70711 52.5068,-1.70737 52.50724,-1.70716 52.50832,-1.70757 52.50927,-1.70768 52.50973,-1.70802 52.50986,-1.70774 52.51007,-1.70784 52.51035,-1.70832 52.51014,-1.70884 52.51038,-1.70909 52.51081,-1.70807 52.51172,-1.70861 52.51181,-1.70887 52.51261,-1.70921 52.51278,-1.7091 52.51319,-1.70913 52.51295,-1.70751 52.5128,-1.70727 52.51284,-1.7068 52.51299,-1.7067 52.51296,-1.70721 52.51355,-1.70699 52.51362,-1.70594 52.51395,-1.70746 52.5145,-1.70758 52.51457,-1.709</polygon>
+    </area>
+  </info>
+</alert>

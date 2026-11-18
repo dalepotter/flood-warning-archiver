@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://cap-xml.prd.defra.cloud/v2/messages.atom</id>
+    <title>Flood warnings for England</title>
+    <updated>2026-11-18T22:34:21.410Z</updated>
+    <generator>Environment Agency CAP XML flood warnings</generator>
+    <author>
+        <name>Environment Agency</name>
+        <email>enquiries@environment-agency.gov.uk</email>
+        <uri>https://www.gov.uk/government/organisations/environment-agency</uri>
+    </author>
+    <link rel="alternate" href="https://cap-xml.prd.defra.cloud/v2/messages.atom"/>
+    <subtitle>Flood warnings for England</subtitle>
+    <rights>Copyright, Environment Agency. Licensed under Creative Commons BY 4.0</rights>
+    <entry>
+        <title type="html"><![CDATA[031WAF213]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133468</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133468"/>
+        <updated>2026-11-18T18:45:20.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033WAF312]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133462</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133462"/>
+        <updated>2026-11-18T17:59:12.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[062WAF53LLTribs]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133446</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133446"/>
+        <updated>2026-11-18T17:14:13.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[062WAF28UpColne]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133441</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133441"/>
+        <updated>2026-11-18T17:13:35.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[112WAFTMBA]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133450</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133450"/>
+        <updated>2026-11-18T17:01:28.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[034WAF428]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133444</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133444"/>
+        <updated>2026-11-18T16:48:26.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[112WAFTUBA]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133426</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133426"/>
+        <updated>2026-11-18T16:30:56.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[065WAF212]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133430</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133430"/>
+        <updated>2026-11-18T16:30:03.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[121WAF915]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133401</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133401"/>
+        <updated>2026-11-18T16:20:50.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[111WATCHXH]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133416</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133416"/>
+        <updated>2026-11-18T16:12:46.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[031WAF208]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133409</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133409"/>
+        <updated>2026-11-18T15:47:04.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[061WAF23ThmsTrbs]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133403</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133403"/>
+        <updated>2026-11-18T15:30:39.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033WAF305]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133395</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133395"/>
+        <updated>2026-11-18T14:50:43.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033WAF307]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133389</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133389"/>
+        <updated>2026-11-18T14:42:20.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[114WAFT1W10A00]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133363</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133363"/>
+        <updated>2026-11-18T12:22:20.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[034WAF430]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133318</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133318"/>
+        <updated>2026-11-18T09:22:16.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[122FWC045]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133282</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133282"/>
+        <updated>2026-11-18T09:17:33.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[122WAF982]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133288</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133288"/>
+        <updated>2026-11-18T09:17:30.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[122WAC953]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133293</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133293"/>
+        <updated>2026-11-18T09:17:27.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[122WAC954]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133295</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133295"/>
+        <updated>2026-11-18T09:17:24.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[121WAF918]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133312</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133312"/>
+        <updated>2026-11-18T09:11:30.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[031WAF104]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133298</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133298"/>
+        <updated>2026-11-18T09:02:12.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[054WAFNF2]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133283</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133283"/>
+        <updated>2026-11-18T09:00:15.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[054WATBT1]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133273</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133273"/>
+        <updated>2026-11-18T08:42:01.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[112WAFTRCC]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133272</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133272"/>
+        <updated>2026-11-18T08:39:44.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033WAF201]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133226</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133226"/>
+        <updated>2026-11-18T08:04:16.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033WAF302]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133229</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133229"/>
+        <updated>2026-11-18T08:04:06.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033WAF301]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133216</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133216"/>
+        <updated>2026-11-18T07:55:47.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[033FWF3COLE001]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/133210</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/133210"/>
+        <updated>2026-11-18T07:51:38.000Z</updated>
+    </entry>
+</feed>
