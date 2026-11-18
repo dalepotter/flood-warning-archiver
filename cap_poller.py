@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import tempfile
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -20,6 +21,7 @@ ATOM_NS = "http://www.w3.org/2005/Atom"
 
 USER_AGENT = "flood-warning-archiver (+https://github.com/dalepotter/flood-warning-archiver)"
 REQUEST_TIMEOUT = (5, 30)  # (connect, read) seconds
+RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 
 # ASCII digits only: IDs become filenames, so \d (which matches other scripts' digits) is avoided.
 MESSAGE_ID_PATTERN = re.compile(r"[0-9]+")
@@ -116,12 +118,28 @@ def save_message(warnings_dir: Path, message_id: str, content: bytes) -> bool:
     return True
 
 
-def fetch(url: str, session: requests.Session | None = None) -> bytes:
-    """GET a URL and return the body exactly as received."""
+def fetch(
+    url: str,
+    session: requests.Session | None = None,
+    attempts: int = 3,
+    backoff: float = 2.0,
+) -> bytes:
+    """GET a URL and return the body exactly as received, retrying transient failures."""
     session = session or requests.Session()
-    try:
-        response = session.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": USER_AGENT})
-        response.raise_for_status()
-    except requests.RequestException as exc:
-        raise FetchError(f"GET {url} failed: {exc}") from exc
-    return response.content
+    problem = "no attempts made"
+    for attempt in range(1, attempts + 1):
+        try:
+            response = session.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": USER_AGENT})
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            problem = f"{type(exc).__name__}: {exc}"
+        except requests.RequestException as exc:  # anything else is not worth retrying
+            raise FetchError(f"GET {url} failed: {exc}") from exc
+        else:
+            if response.ok:
+                return response.content
+            problem = f"HTTP {response.status_code}"
+            if response.status_code not in RETRYABLE_STATUS_CODES:
+                break
+        if attempt < attempts:
+            time.sleep(backoff * 2 ** (attempt - 1))
+    raise FetchError(f"GET {url} failed after {attempt} attempt(s): {problem}")

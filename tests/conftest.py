@@ -19,3 +19,11 @@ def warnings_dir(tmp_path):
 @pytest.fixture
 def feed_xml() -> bytes:
     return read_fixture("messages.atom")
+
+
+@pytest.fixture(autouse=True)
+def sleeps(monkeypatch):
+    """Never really sleep in tests; expose the requested delays instead."""
+    delays = []
+    monkeypatch.setattr("cap_poller.time.sleep", delays.append)
+    return delays
