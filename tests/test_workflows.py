@@ -42,3 +42,12 @@ def test_poll_workflow_still_fails_the_run_when_polling_fails():
     poll = next(s for s in steps if s.get("id") == "poll")
     assert poll["continue-on-error"] is True
     assert any(s.get("if") == "steps.poll.outcome == 'failure'" for s in steps)
+
+
+def test_commit_message_names_the_archived_messages():
+    data, _ = load_workflow()
+    steps = data["jobs"]["poll"]["steps"]
+    commit = next(s for s in steps if s.get("uses", "").startswith("stefanzweifel/git-auto-commit-action@"))
+    message = commit["with"]["commit_message"]
+    assert "steps.poll.outputs.new_count" in message
+    assert "steps.poll.outputs.new_ids" in message

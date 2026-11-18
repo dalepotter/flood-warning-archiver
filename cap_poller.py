@@ -198,6 +198,33 @@ def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | Non
     return result
 
 
+def format_summary(result: PollResult) -> str:
+    lines = [
+        "## CAP feed poll",
+        "",
+        f"- New messages archived: {len(result.new_ids)}",
+        f"- Already archived: {len(result.already_stored)}",
+        f"- Failed: {len(result.failed)}",
+    ]
+    if result.new_ids:
+        lines += ["", "### New", *[f"- {message_id}" for message_id in result.new_ids]]
+    if result.failed:
+        lines += ["", "### Failed", *[f"- {message_id}: {reason}" for message_id, reason in result.failed.items()]]
+    return "\n".join(lines) + "\n"
+
+
+def write_github_outputs(result: PollResult, environ=None) -> None:
+    """Expose results to GitHub Actions. Does nothing when run outside Actions."""
+    environ = os.environ if environ is None else environ
+    if output_path := environ.get("GITHUB_OUTPUT"):
+        with open(output_path, "a", encoding="utf-8") as f:
+            f.write(f"new_count={len(result.new_ids)}\n")
+            f.write(f"new_ids={', '.join(result.new_ids)}\n")
+    if summary_path := environ.get("GITHUB_STEP_SUMMARY"):
+        with open(summary_path, "a", encoding="utf-8") as f:
+            f.write(format_summary(result))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Archive new EA CAP flood warning messages as raw XML.")
     parser.add_argument("--warnings-dir", type=Path, default=WARNINGS_DIR, help="archive folder (default: warnings)")
@@ -215,6 +242,7 @@ def main(argv: list[str] | None = None) -> int:
         logger.error("Could not read the CAP feed: %s", exc)
         return 1
 
+    write_github_outputs(result)
     logger.info(
         "Archived %d new message(s); %d already archived; %d failed",
         len(result.new_ids), len(result.already_stored), len(result.failed),

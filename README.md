@@ -49,4 +49,8 @@ message could not be archived (the others are still saved, and failures are retr
 `github-actions[bot]` using
 [git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action).
 
+Each run's summary page lists what was archived, and the commit message names the message IDs, for
+example `data: Archive 2 new CAP message(s) (132562, 132570)`. If polling fails, any messages already
+archived are still committed and the run is marked failed.
+
 Scheduled runs are best-effort: GitHub may delay them at busy times.

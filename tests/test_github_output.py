@@ -1,0 +1,35 @@
+from cap_poller import PollResult, format_summary, write_github_outputs
+
+
+def test_outputs_are_written_when_running_in_actions(tmp_path):
+    out = tmp_path / "output"
+    result = PollResult(new_ids=["132562", "132570"])
+
+    write_github_outputs(result, {"GITHUB_OUTPUT": str(out)})
+
+    assert out.read_text() == "new_count=2\nnew_ids=132562, 132570\n"
+
+
+def test_summary_is_written_when_running_in_actions(tmp_path):
+    summary = tmp_path / "summary.md"
+    write_github_outputs(PollResult(new_ids=["1"]), {"GITHUB_STEP_SUMMARY": str(summary)})
+    assert "New messages archived: 1" in summary.read_text()
+
+
+def test_nothing_is_written_outside_actions(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    write_github_outputs(PollResult(new_ids=["1"]), {})
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_summary_lists_failures_with_reasons():
+    result = PollResult(failed={"132514": "HTTP 500"})
+    text = format_summary(result)
+    assert "Failed: 1" in text
+    assert "- 132514: HTTP 500" in text
+
+
+def test_summary_lists_new_message_ids():
+    text = format_summary(PollResult(new_ids=["132562", "132570"]))
+    assert "- 132562" in text
+    assert "- 132570" in text

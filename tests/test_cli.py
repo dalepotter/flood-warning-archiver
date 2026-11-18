@@ -64,3 +64,15 @@ def test_running_the_script_directly_exits_with_main_return_code(make_feed, aler
 
     assert excinfo.value.code == 0
     assert (warnings_dir / "132508.xml").exists()
+
+
+@responses.activate
+def test_main_writes_github_outputs_when_available(make_feed, alert_xml, warnings_dir, tmp_path, monkeypatch):
+    out = tmp_path / "output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
+
+    main(["--warnings-dir", str(warnings_dir)])
+
+    assert "new_ids=132508" in out.read_text()
