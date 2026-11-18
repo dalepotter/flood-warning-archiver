@@ -1,0 +1,51 @@
+name: Poll CAP feed
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # hourly, at 17 minutes past (avoids the busy top of the hour)
+  workflow_dispatch:        # allow manual runs from the Actions tab
+
+permissions:
+  contents: write           # needed to push the new warnings
+
+concurrency:
+  group: poll-cap-feed
+  cancel-in-progress: false # never cancel a run part-way through archiving
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Poll CAP feed
+        id: poll
+        continue-on-error: true   # still commit anything archived before a partial failure
+        run: python cap_poller.py
+
+      - name: Commit new warnings
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "data: Archive new CAP messages"
+          file_pattern: "warnings/*.xml"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+
+      - name: Fail the run if polling failed
+        if: steps.poll.outcome == 'failure'
+        run: exit 1

@@ -41,3 +41,12 @@ python cap_poller.py -v                      # debug logging
 
 Exit codes: `0` success (including "nothing new"); `1` the feed could not be read, or at least one
 message could not be archived (the others are still saved, and failures are retried on the next run).
+
+## Automation
+
+`.github/workflows/poll.yml` runs `python cap_poller.py` every hour (at 17 minutes past) and on demand
+(Actions tab → "Poll CAP feed" → "Run workflow"). Any new messages are committed to `main` by
+`github-actions[bot]` using
+[git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action).
+
+Scheduled runs are best-effort: GitHub may delay them at busy times.
