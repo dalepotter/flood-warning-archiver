@@ -172,6 +172,7 @@ def message_url(message_id: str) -> str:
 class PollResult:
     new_ids: list[str] = field(default_factory=list)
     already_stored: list[str] = field(default_factory=list)
+    failed: dict[str, str] = field(default_factory=dict)  # message id -> reason
 
 
 def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | None = None) -> PollResult:
@@ -183,8 +184,13 @@ def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | Non
         if is_stored(warnings_dir, entry.message_id):
             result.already_stored.append(entry.message_id)
             continue
-        content = fetch(message_url(entry.message_id), session)
-        validate_cap_message(content)
+        try:
+            content = fetch(message_url(entry.message_id), session)
+            validate_cap_message(content)
+        except (FetchError, InvalidMessageError) as exc:
+            logger.error("Not archiving message %s: %s", entry.message_id, exc)
+            result.failed[entry.message_id] = str(exc)
+            continue
         save_message(warnings_dir, entry.message_id, content)
         result.new_ids.append(entry.message_id)
     return result

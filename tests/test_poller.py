@@ -1,6 +1,7 @@
+import pytest
 import responses
 
-from cap_poller import FEED_URL, message_url, poll_once, save_message
+from cap_poller import FEED_URL, FetchError, message_url, poll_once, save_message
 
 
 @responses.activate
@@ -50,3 +51,44 @@ def test_only_the_new_message_is_fetched_when_the_feed_grows(make_feed, alert_xm
 
     assert result.new_ids == ["132514"]
     assert [c.request.url for c in responses.calls] == [FEED_URL, message_url("132514")]
+
+
+@responses.activate
+def test_a_failing_message_does_not_stop_the_others(make_feed, alert_xml, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132514", "132508"]))
+    responses.add(responses.GET, message_url("132514"), status=500)
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
+
+    result = poll_once(warnings_dir)
+
+    assert result.new_ids == ["132508"]
+    assert list(result.failed) == ["132514"]
+    assert not (warnings_dir / "132514.xml").exists()
+
+
+@responses.activate
+def test_a_non_cap_200_response_is_not_archived(make_feed, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132514"]))
+    responses.add(responses.GET, message_url("132514"), body=b"<html>Service unavailable</html>")
+
+    result = poll_once(warnings_dir)
+
+    assert "132514" in result.failed
+    assert list(warnings_dir.glob("*")) == []
+
+
+@responses.activate
+def test_a_failed_message_is_retried_on_the_next_poll(make_feed, alert_xml, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), status=404)
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
+
+    assert "132508" in poll_once(warnings_dir).failed
+    assert poll_once(warnings_dir).new_ids == ["132508"]
+
+
+@responses.activate
+def test_index_failure_propagates(warnings_dir):
+    responses.add(responses.GET, FEED_URL, status=503)
+    with pytest.raises(FetchError):
+        poll_once(warnings_dir)
