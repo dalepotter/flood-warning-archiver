@@ -2,7 +2,7 @@ name: Poll CAP feed
 
 on:
   schedule:
-    - cron: '17 * * * *'   # hourly, at 17 minutes past (avoids the busy top of the hour)
+    - cron: '10 * * * *'   # hourly, at 10 minutes past (avoids the busy top of the hour)
   workflow_dispatch:        # allow manual runs from the Actions tab
 
 permissions:
