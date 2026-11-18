@@ -92,3 +92,48 @@ def test_index_failure_propagates(warnings_dir):
     responses.add(responses.GET, FEED_URL, status=503)
     with pytest.raises(FetchError):
         poll_once(warnings_dir)
+
+
+@responses.activate
+def test_empty_feed_archives_nothing(make_feed, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed([]))
+    result = poll_once(warnings_dir)
+    assert (result.new_ids, result.already_stored, result.failed) == ([], [], {})
+
+
+@responses.activate
+def test_empty_message_body_is_not_archived(make_feed, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["1"]))
+    responses.add(responses.GET, message_url("1"), body=b"")
+    assert "1" in poll_once(warnings_dir).failed
+
+
+@responses.activate
+def test_message_bytes_are_archived_exactly_even_with_a_non_utf8_declaration(make_feed, warnings_dir):
+    raw = (
+        b'<?xml version="1.0" encoding="ISO-8859-1"?>\r\n'
+        b'<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2"><note>caf\xe9</note></alert>\r\n'
+    )
+    responses.add(responses.GET, FEED_URL, body=make_feed(["1"]))
+    responses.add(responses.GET, message_url("1"), body=raw)
+    poll_once(warnings_dir)
+    assert (warnings_dir / "1.xml").read_bytes() == raw
+
+
+@responses.activate
+def test_message_listed_twice_in_the_feed_is_fetched_once(make_feed, alert_xml, warnings_dir):
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132508", "132508"]))
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
+    result = poll_once(warnings_dir)
+    assert result.new_ids == ["132508"]
+    assert len(responses.calls) == 2
+
+
+@responses.activate
+def test_unrelated_files_in_the_archive_folder_are_ignored(make_feed, alert_xml, warnings_dir):
+    warnings_dir.mkdir()
+    (warnings_dir / ".gitkeep").write_text("")
+    (warnings_dir / "notes.txt").write_text("hello")
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
+    assert poll_once(warnings_dir).new_ids == ["132508"]
