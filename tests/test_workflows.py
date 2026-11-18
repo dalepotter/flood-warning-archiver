@@ -36,6 +36,13 @@ def test_poll_workflow_only_commits_archived_messages():
     assert commit["with"]["file_pattern"] == "warnings/*.xml"
 
 
+def test_poll_workflow_checks_out_the_branch_head_not_the_triggering_sha():
+    data, _ = load_workflow()
+    steps = data["jobs"]["poll"]["steps"]
+    checkout = next(s for s in steps if s.get("uses", "").startswith("actions/checkout@"))
+    assert checkout["with"]["ref"] == "${{ github.event.repository.default_branch }}"
+
+
 def test_poll_workflow_still_fails_the_run_when_polling_fails():
     data, _ = load_workflow()
     steps = data["jobs"]["poll"]["steps"]
