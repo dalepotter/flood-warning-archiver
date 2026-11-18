@@ -8,6 +8,7 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+import requests
 from defusedxml import DefusedXmlException
 from defusedxml import ElementTree as ET
 
@@ -17,6 +18,9 @@ WARNINGS_DIR = Path("warnings")
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 
+USER_AGENT = "flood-warning-archiver (+https://github.com/dalepotter/flood-warning-archiver)"
+REQUEST_TIMEOUT = (5, 30)  # (connect, read) seconds
+
 # ASCII digits only: IDs become filenames, so \d (which matches other scripts' digits) is avoided.
 MESSAGE_ID_PATTERN = re.compile(r"[0-9]+")
 
@@ -25,6 +29,10 @@ logger = logging.getLogger("cap_poller")
 
 class FeedParseError(Exception):
     """The feed could not be read as an ATOM document."""
+
+
+class FetchError(Exception):
+    """A URL could not be fetched."""
 
 
 @dataclass(frozen=True)
@@ -106,3 +114,14 @@ def save_message(warnings_dir: Path, message_id: str, content: bytes) -> bool:
         Path(tmp_name).unlink(missing_ok=True)
         raise
     return True
+
+
+def fetch(url: str, session: requests.Session | None = None) -> bytes:
+    """GET a URL and return the body exactly as received."""
+    session = session or requests.Session()
+    try:
+        response = session.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": USER_AGENT})
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise FetchError(f"GET {url} failed: {exc}") from exc
+    return response.content
