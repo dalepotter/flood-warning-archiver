@@ -6,7 +6,7 @@ import os
 import re
 import tempfile
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import requests
@@ -162,3 +162,29 @@ def validate_cap_message(content: bytes) -> None:
         raise InvalidMessageError(f"Not valid XML: {exc}") from exc
     if root.tag != f"{{{CAP_NS}}}alert":
         raise InvalidMessageError(f"Unexpected root element: {root.tag}")
+
+
+def message_url(message_id: str) -> str:
+    return f"{BASE_URL}/message/{message_id}"
+
+
+@dataclass
+class PollResult:
+    new_ids: list[str] = field(default_factory=list)
+    already_stored: list[str] = field(default_factory=list)
+
+
+def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | None = None) -> PollResult:
+    """Fetch the index, then fetch, validate and save every message not yet archived."""
+    session = session or requests.Session()
+    entries = parse_feed(fetch(FEED_URL, session))
+    result = PollResult()
+    for entry in entries:
+        if is_stored(warnings_dir, entry.message_id):
+            result.already_stored.append(entry.message_id)
+            continue
+        content = fetch(message_url(entry.message_id), session)
+        validate_cap_message(content)
+        save_message(warnings_dir, entry.message_id, content)
+        result.new_ids.append(entry.message_id)
+    return result
