@@ -1,0 +1,10 @@
+name: Schedule probe
+on:
+  schedule:
+    - cron: '10 * * * *'
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "$GITHUB_EVENT_NAME by $GITHUB_ACTOR at $(date -u)"
