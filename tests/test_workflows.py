@@ -29,11 +29,11 @@ def test_poll_workflow_never_overlaps_runs():
     assert data["concurrency"]["cancel-in-progress"] is False
 
 
-def test_poll_workflow_only_commits_archived_messages():
+def test_poll_workflow_only_commits_archived_messages_and_the_feed():
     data, _ = load_workflow()
     steps = data["jobs"]["poll"]["steps"]
     commit = next(s for s in steps if s.get("uses", "").startswith("stefanzweifel/git-auto-commit-action@"))
-    assert commit["with"]["file_pattern"] == "warnings/*.xml"
+    assert commit["with"]["file_pattern"].split() == ["warnings/*.xml", "feed/messages.atom"]
 
 
 def test_poll_workflow_checks_out_the_branch_head_not_the_triggering_sha():
@@ -58,3 +58,4 @@ def test_commit_message_names_the_archived_messages():
     message = commit["with"]["commit_message"]
     assert "steps.poll.outputs.new_count" in message
     assert "steps.poll.outputs.new_ids" in message
+    assert "steps.poll.outputs.feed_changed" in message

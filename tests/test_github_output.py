@@ -7,7 +7,17 @@ def test_outputs_are_written_when_running_in_actions(tmp_path):
 
     write_github_outputs(result, {"GITHUB_OUTPUT": str(out)})
 
-    assert out.read_text() == "new_count=2\nnew_ids=132562, 132570\n"
+    assert out.read_text() == "new_count=2\nnew_ids=132562, 132570\nfeed_changed=false\n"
+
+
+def test_feed_changed_output_and_summary_reflect_the_result(tmp_path):
+    out, summary = tmp_path / "output", tmp_path / "summary.md"
+    result = PollResult(feed_changed=True)
+
+    write_github_outputs(result, {"GITHUB_OUTPUT": str(out), "GITHUB_STEP_SUMMARY": str(summary)})
+
+    assert "feed_changed=true\n" in out.read_text()
+    assert "Feed updated: yes" in summary.read_text()
 
 
 def test_summary_is_written_when_running_in_actions(tmp_path):

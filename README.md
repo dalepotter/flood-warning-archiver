@@ -15,6 +15,9 @@ repository.
    superseded messages can leave the index while remaining retrievable.
 3. Check the response is a CAP 1.2 `alert` (so an error page is never archived).
 4. Save the bytes **exactly as received** as `warnings/<id>.xml`. Existing files are never overwritten.
+5. Save the index itself, as received, to `feed/messages.atom`, replacing the previous copy. The file is
+   only rewritten (and so only committed) when its content has changed; git history keeps earlier versions.
+   A feed that fails to parse is never saved.
 
 Message IDs are validated as digits only, because they become filenames.
 
@@ -42,6 +45,7 @@ pip install -r requirements.txt
 
 python cap_poller.py                         # archive into ./warnings
 python cap_poller.py --warnings-dir /tmp/w   # archive somewhere else
+python cap_poller.py --feed-file /tmp/f.atom # keep the index copy somewhere else
 python cap_poller.py -v                      # debug logging
 ```
 

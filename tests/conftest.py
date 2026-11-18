@@ -10,6 +10,12 @@ def read_fixture(name: str) -> bytes:
     return (FIXTURES / name).read_bytes()
 
 
+@pytest.fixture(autouse=True)
+def in_tmp_cwd(tmp_path, monkeypatch):
+    """Keep the default relative archive paths (feed/, warnings/) out of the real repository."""
+    monkeypatch.chdir(tmp_path)
+
+
 @pytest.fixture
 def warnings_dir(tmp_path):
     """A not-yet-created archive folder inside a temporary directory."""

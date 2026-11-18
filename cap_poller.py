@@ -18,6 +18,7 @@ from defusedxml import ElementTree as ET
 BASE_URL = "https://cap-xml.prd.defra.cloud/v2"
 FEED_URL = f"{BASE_URL}/messages.atom"
 WARNINGS_DIR = Path("warnings")
+FEED_ARCHIVE_PATH = Path("feed/messages.atom")
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 CAP_NS = "urn:oasis:names:tc:emergency:cap:1.2"
@@ -125,6 +126,27 @@ def save_message(warnings_dir: Path, message_id: str, content: bytes) -> bool:
     return True
 
 
+def save_feed(path: Path, content: bytes) -> bool:
+    """Write the index bytes unchanged, replacing any previous copy.
+
+    Returns False (and writes nothing) if the stored copy is already identical, so git
+    only sees a change when the feed really changed. Uses the same atomic write as save_message.
+    """
+    path = Path(path)
+    if path.exists() and path.read_bytes() == content:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as tmp:
+            tmp.write(content)
+        os.replace(tmp_name, path)
+    except BaseException:
+        Path(tmp_name).unlink(missing_ok=True)
+        raise
+    return True
+
+
 def fetch(
     url: str,
     session: requests.Session | None = None,
@@ -176,6 +198,7 @@ class PollResult:
     already_stored: list[str] = field(default_factory=list)
     failed: dict[str, str] = field(default_factory=dict)  # message id -> reason
     unavailable_references: dict[str, str] = field(default_factory=dict)  # not a failure
+    feed_changed: bool = False
 
 
 def referenced_message_ids(content: bytes) -> list[str]:
@@ -197,15 +220,21 @@ def referenced_message_ids(content: bytes) -> list[str]:
     return ids
 
 
-def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | None = None) -> PollResult:
-    """Fetch the index, then fetch, validate and save every message not yet archived.
+def poll_once(
+    warnings_dir: Path = WARNINGS_DIR,
+    session: requests.Session | None = None,
+    feed_path: Path = FEED_ARCHIVE_PATH,
+) -> PollResult:
+    """Fetch the index, archive it if changed, then fetch, validate and save every message not yet archived.
 
     Messages named in the `references` of a newly archived message are fetched too, because
     superseded messages can leave the index while remaining retrievable by ID.
     """
     session = session or requests.Session()
-    entries = parse_feed(fetch(FEED_URL, session))
+    feed_bytes = fetch(FEED_URL, session)
+    entries = parse_feed(feed_bytes)  # rejects a malformed feed before anything is saved
     result = PollResult()
+    result.feed_changed = save_feed(feed_path, feed_bytes)
     pending = [(entry.message_id, False) for entry in entries]  # (id, found via references?)
     seen: set[str] = set()
     while pending:
@@ -242,6 +271,7 @@ def format_summary(result: PollResult) -> str:
         f"- Already archived: {len(result.already_stored)}",
         f"- Failed: {len(result.failed)}",
         f"- Referenced but unavailable: {len(result.unavailable_references)}",
+        f"- Feed updated: {'yes' if result.feed_changed else 'no'}",
     ]
     if result.new_ids:
         lines += ["", "### New", *[f"- {message_id}" for message_id in result.new_ids]]
@@ -257,6 +287,7 @@ def write_github_outputs(result: PollResult, environ=None) -> None:
         with open(output_path, "a", encoding="utf-8") as f:
             f.write(f"new_count={len(result.new_ids)}\n")
             f.write(f"new_ids={', '.join(result.new_ids)}\n")
+            f.write(f"feed_changed={'true' if result.feed_changed else 'false'}\n")
     if summary_path := environ.get("GITHUB_STEP_SUMMARY"):
         with open(summary_path, "a", encoding="utf-8") as f:
             f.write(format_summary(result))
@@ -265,6 +296,9 @@ def write_github_outputs(result: PollResult, environ=None) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Archive new EA CAP flood warning messages as raw XML.")
     parser.add_argument("--warnings-dir", type=Path, default=WARNINGS_DIR, help="archive folder (default: warnings)")
+    parser.add_argument(
+        "--feed-file", type=Path, default=FEED_ARCHIVE_PATH, help="archived copy of the index (default: feed/messages.atom)"
+    )
     parser.add_argument("-v", "--verbose", action="store_true", help="debug logging")
     args = parser.parse_args(argv)
 
@@ -274,7 +308,7 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     try:
-        result = poll_once(args.warnings_dir)
+        result = poll_once(args.warnings_dir, feed_path=args.feed_file)
     except (FetchError, FeedParseError) as exc:
         logger.error("Could not read the CAP feed: %s", exc)
         return 1

@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from cap_poller import FEED_URL, FetchError, message_url, poll_once, save_message
+from cap_poller import FEED_URL, FeedParseError, FetchError, message_url, poll_once, save_feed, save_message
 
 
 @responses.activate
@@ -194,3 +194,58 @@ def test_reference_cycles_terminate(make_feed, warnings_dir):
     responses.add(responses.GET, message_url("2"), body=b)
 
     assert sorted(poll_once(warnings_dir).new_ids) == ["1", "2"]
+
+
+@responses.activate
+def test_poll_once_archives_the_feed_as_received(make_feed, tmp_path):
+    feed = make_feed([])
+    feed_path = tmp_path / "feed" / "messages.atom"
+    responses.add(responses.GET, FEED_URL, body=feed)
+
+    result = poll_once(tmp_path / "w", feed_path=feed_path)
+
+    assert result.feed_changed is True
+    assert feed_path.read_bytes() == feed
+
+
+@responses.activate
+def test_unchanged_feed_is_not_rewritten(make_feed, tmp_path):
+    feed_path = tmp_path / "messages.atom"
+    responses.add(responses.GET, FEED_URL, body=make_feed([]))
+
+    poll_once(tmp_path / "w", feed_path=feed_path)
+    mtime = feed_path.stat().st_mtime_ns
+    second = poll_once(tmp_path / "w", feed_path=feed_path)
+
+    assert second.feed_changed is False
+    assert feed_path.stat().st_mtime_ns == mtime
+
+
+@responses.activate
+def test_changed_feed_replaces_the_archived_copy(make_feed, alert_xml, tmp_path):
+    feed_path = tmp_path / "messages.atom"
+    responses.add(responses.GET, FEED_URL, body=make_feed([]))
+    poll_once(tmp_path / "w", feed_path=feed_path)
+    responses.replace(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
+
+    result = poll_once(tmp_path / "w", feed_path=feed_path)
+
+    assert result.feed_changed is True
+    assert feed_path.read_bytes() == make_feed(["132508"])
+
+
+@responses.activate
+def test_malformed_feed_is_not_archived(tmp_path):
+    feed_path = tmp_path / "messages.atom"
+    responses.add(responses.GET, FEED_URL, body=b"<html>Forbidden</html>")
+
+    with pytest.raises(FeedParseError):
+        poll_once(tmp_path / "w", feed_path=feed_path)
+
+    assert not feed_path.exists()
+
+
+def test_save_feed_leaves_no_temporary_files(tmp_path):
+    save_feed(tmp_path / "feed" / "messages.atom", b"<feed/>")
+    assert [p.name for p in (tmp_path / "feed").iterdir()] == ["messages.atom"]
