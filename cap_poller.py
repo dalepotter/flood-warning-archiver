@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Poll the Environment Agency CAP ATOM feed and archive new CAP messages as raw XML."""
 
+import argparse
 import logging
 import os
 import re
+import sys
 import tempfile
 import time
 from dataclasses import dataclass, field
@@ -194,3 +196,31 @@ def poll_once(warnings_dir: Path = WARNINGS_DIR, session: requests.Session | Non
         save_message(warnings_dir, entry.message_id, content)
         result.new_ids.append(entry.message_id)
     return result
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Archive new EA CAP flood warning messages as raw XML.")
+    parser.add_argument("--warnings-dir", type=Path, default=WARNINGS_DIR, help="archive folder (default: warnings)")
+    parser.add_argument("-v", "--verbose", action="store_true", help="debug logging")
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format="%(asctime)s %(levelname)s %(message)s",
+    )
+
+    try:
+        result = poll_once(args.warnings_dir)
+    except (FetchError, FeedParseError) as exc:
+        logger.error("Could not read the CAP feed: %s", exc)
+        return 1
+
+    logger.info(
+        "Archived %d new message(s); %d already archived; %d failed",
+        len(result.new_ids), len(result.already_stored), len(result.failed),
+    )
+    return 1 if result.failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

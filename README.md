@@ -30,3 +30,14 @@ pytest
 Each CAP message is stored unchanged as `warnings/<message-id>.xml`, where the ID is the number in the
 message URL (`/v2/message/<id>`). Files are never overwritten: if an ID is already archived it is not
 fetched again.
+
+## Usage
+
+```bash
+python cap_poller.py                         # archive into ./warnings
+python cap_poller.py --warnings-dir /tmp/w   # archive somewhere else
+python cap_poller.py -v                      # debug logging
+```
+
+Exit codes: `0` success (including "nothing new"); `1` the feed could not be read, or at least one
+message could not be archived (the others are still saved, and failures are retried on the next run).
