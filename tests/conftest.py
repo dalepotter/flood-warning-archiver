@@ -27,3 +27,13 @@ def sleeps(monkeypatch):
     delays = []
     monkeypatch.setattr("cap_poller.time.sleep", delays.append)
     return delays
+
+
+@pytest.fixture
+def alert_xml() -> bytes:
+    return read_fixture("message-132508.xml")
+
+
+@pytest.fixture
+def cancel_xml() -> bytes:
+    return read_fixture("message-132514.xml")

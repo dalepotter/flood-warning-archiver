@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>2.49.0.1.826.1.20261102093532.132514</identifier>
+  <sender>www.gov.uk/environment-agency</sender>
+  <sent>2026-11-02T09:35:32+00:00</sent>
+  <status>Actual</status>
+  <msgType>Cancel</msgType>
+  <references>www.gov.uk/environment-agency,2.49.0.1.826.1.20261101154420.132508,2026-11-01T15:44:20+00:00</references>
+  <code>MCP:v2.0</code>
+  <info>
+    <event>Flood Alert: The tidal Rivers Bure, Ant and Thurne</event>
+    <severity>Minor</severity>
+    <expires>2026-11-03T09:35:32+00:00</expires>
+    <headline>Flooding is possible: The tidal Rivers Bure, Ant and Thurne</headline>
+  </info>
+</alert>

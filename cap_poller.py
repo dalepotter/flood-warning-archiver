@@ -18,6 +18,7 @@ FEED_URL = f"{BASE_URL}/messages.atom"
 WARNINGS_DIR = Path("warnings")
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
+CAP_NS = "urn:oasis:names:tc:emergency:cap:1.2"
 
 USER_AGENT = "flood-warning-archiver (+https://github.com/dalepotter/flood-warning-archiver)"
 REQUEST_TIMEOUT = (5, 30)  # (connect, read) seconds
@@ -35,6 +36,10 @@ class FeedParseError(Exception):
 
 class FetchError(Exception):
     """A URL could not be fetched."""
+
+
+class InvalidMessageError(Exception):
+    """Fetched content is not a CAP 1.2 alert."""
 
 
 @dataclass(frozen=True)
@@ -143,3 +148,17 @@ def fetch(
         if attempt < attempts:
             time.sleep(backoff * 2 ** (attempt - 1))
     raise FetchError(f"GET {url} failed after {attempt} attempt(s): {problem}")
+
+
+def validate_cap_message(content: bytes) -> None:
+    """Raise InvalidMessageError unless content is a well-formed CAP 1.2 <alert>.
+
+    Deliberately shallow: it checks the document type, not the full schema, so that
+    unexpected-but-genuine EA content is still archived. The bytes are never modified.
+    """
+    try:
+        root = ET.fromstring(content)
+    except (ET.ParseError, DefusedXmlException) as exc:
+        raise InvalidMessageError(f"Not valid XML: {exc}") from exc
+    if root.tag != f"{{{CAP_NS}}}alert":
+        raise InvalidMessageError(f"Unexpected root element: {root.tag}")
