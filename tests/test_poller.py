@@ -221,6 +221,34 @@ def test_unchanged_feed_is_not_rewritten(make_feed, tmp_path):
     assert feed_path.stat().st_mtime_ns == mtime
 
 
+def test_feed_level_updated_change_is_not_archived(tmp_path):
+    feed_path = tmp_path / "messages.atom"
+    original = (
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>Flood warnings</title>'
+        b"<updated>2026-11-18T22:34:21.410Z</updated></feed>"
+    )
+    updated = original.replace(b"2026-11-18T22:34:21.410Z", b"2026-11-19T04:07:00.704Z")
+    save_feed(feed_path, original)
+    mtime = feed_path.stat().st_mtime_ns
+
+    assert save_feed(feed_path, updated) is False
+    assert feed_path.read_bytes() == original
+    assert feed_path.stat().st_mtime_ns == mtime
+
+
+def test_entry_updated_change_replaces_the_archived_feed(tmp_path):
+    feed_path = tmp_path / "messages.atom"
+    original = (
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><entry>'
+        b"<updated>2026-11-18T22:34:21.410Z</updated></entry></feed>"
+    )
+    updated = original.replace(b"2026-11-18T22:34:21.410Z", b"2026-11-19T04:07:00.704Z")
+    save_feed(feed_path, original)
+
+    assert save_feed(feed_path, updated) is True
+    assert feed_path.read_bytes() == updated
+
+
 @responses.activate
 def test_changed_feed_replaces_the_archived_copy(make_feed, alert_xml, tmp_path):
     feed_path = tmp_path / "messages.atom"

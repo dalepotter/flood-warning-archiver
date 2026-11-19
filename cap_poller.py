@@ -126,15 +126,36 @@ def save_message(warnings_dir: Path, message_id: str, content: bytes) -> bool:
     return True
 
 
+def _feed_comparison_bytes_content_only(content: bytes) -> bytes:
+    """Serialize a valid Atom feed with only the root feed-level updated value ignored."""
+    try:
+        root = ET.fromstring(content)
+    except (ET.ParseError, DefusedXmlException) as exc:
+        raise FeedParseError(f"Feed is not valid XML: {exc}") from exc
+    if root.tag != f"{{{ATOM_NS}}}feed":
+        raise FeedParseError(f"Unexpected root element: {root.tag}")
+
+    updated = root.find(f"{{{ATOM_NS}}}updated")
+    if updated is not None:
+        updated.text = ""
+    return ET.tostring(root, encoding="utf-8")
+
+
 def save_feed(path: Path, content: bytes) -> bool:
     """Write the index bytes unchanged, replacing any previous copy.
 
-    Returns False (and writes nothing) if the stored copy is already identical, so git
-    only sees a change when the feed really changed. Uses the same atomic write as save_message.
+    Returns False (and writes nothing) if the stored copy is identical apart from the
+    feed-level updated value, so git only sees meaningful changes. Uses the same atomic
+    write as save_message.
     """
     path = Path(path)
-    if path.exists() and path.read_bytes() == content:
-        return False
+    if path.exists():
+        existing = path.read_bytes()
+        if existing == content or (
+            _feed_comparison_bytes_content_only(existing)
+            == _feed_comparison_bytes_content_only(content)
+        ):
+            return False
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
     try:
