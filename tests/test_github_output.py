@@ -7,7 +7,21 @@ def test_outputs_are_written_when_running_in_actions(tmp_path):
 
     write_github_outputs(result, {"GITHUB_OUTPUT": str(out)})
 
-    assert out.read_text() == "new_count=2\nnew_ids=132562, 132570\nfeed_changed=false\n"
+    assert out.read_text() == (
+        "new_count=2\nnew_ids=132562, 132570\nupdated_count=0\nupdated_ids=\nfeed_changed=false\n"
+    )
+
+
+def test_updated_messages_are_reported_in_outputs_and_summary(tmp_path):
+    out, summary = tmp_path / "output", tmp_path / "summary.md"
+    write_github_outputs(
+        PollResult(updated_ids=["132562"]),
+        {"GITHUB_OUTPUT": str(out), "GITHUB_STEP_SUMMARY": str(summary)},
+    )
+
+    assert "updated_count=1\nupdated_ids=132562\n" in out.read_text()
+    assert "Existing messages updated: 1" in summary.read_text()
+    assert "- 132562" in summary.read_text()
 
 
 def test_feed_changed_output_and_summary_reflect_the_result(tmp_path):

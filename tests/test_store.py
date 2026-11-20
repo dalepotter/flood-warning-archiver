@@ -28,10 +28,17 @@ def test_save_message_preserves_bytes_exactly(warnings_dir):
     assert (warnings_dir / "1.xml").read_bytes() == raw
 
 
-def test_save_message_never_overwrites(warnings_dir):
+def test_save_message_does_not_rewrite_identical_content(warnings_dir):
     save_message(warnings_dir, "1", b"original")
-    assert save_message(warnings_dir, "1", b"changed") is False
-    assert (warnings_dir / "1.xml").read_bytes() == b"original"
+    mtime = (warnings_dir / "1.xml").stat().st_mtime_ns
+    assert save_message(warnings_dir, "1", b"original") is False
+    assert (warnings_dir / "1.xml").stat().st_mtime_ns == mtime
+
+
+def test_save_message_replaces_different_content(warnings_dir):
+    save_message(warnings_dir, "1", b"original")
+    assert save_message(warnings_dir, "1", b"changed") is True
+    assert (warnings_dir / "1.xml").read_bytes() == b"changed"
 
 
 def test_save_message_leaves_no_temporary_files(warnings_dir):

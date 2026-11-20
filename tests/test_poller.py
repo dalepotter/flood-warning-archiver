@@ -18,15 +18,17 @@ def test_poll_once_archives_new_messages_as_raw_xml(make_feed, alert_xml, cancel
 
 
 @responses.activate
-def test_poll_once_does_not_refetch_archived_messages(make_feed, alert_xml, warnings_dir):
+def test_poll_once_checks_archived_messages_against_the_feed(make_feed, alert_xml, warnings_dir):
     save_message(warnings_dir, "132508", alert_xml)
     responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
 
     result = poll_once(warnings_dir)
 
     assert result.new_ids == []
+    assert result.updated_ids == []
     assert result.already_stored == ["132508"]
-    assert len(responses.calls) == 1  # the index only
+    assert [c.request.url for c in responses.calls] == [FEED_URL, message_url("132508")]
 
 
 @responses.activate
@@ -35,10 +37,13 @@ def test_second_poll_with_unchanged_feed_is_a_no_op(make_feed, alert_xml, warnin
     responses.add(responses.GET, message_url("132508"), body=alert_xml)
 
     poll_once(warnings_dir)
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
     second = poll_once(warnings_dir)
 
     assert second.new_ids == []
-    assert len(responses.calls) == 3  # index, message, index
+    assert second.already_stored == ["132508"]
+    assert len(responses.calls) == 4  # each poll checks the index and its listed message
 
 
 @responses.activate
@@ -46,11 +51,30 @@ def test_only_the_new_message_is_fetched_when_the_feed_grows(make_feed, alert_xm
     save_message(warnings_dir, "132508", alert_xml)
     responses.add(responses.GET, FEED_URL, body=make_feed(["132514", "132508"]))
     responses.add(responses.GET, message_url("132514"), body=cancel_xml)
+    responses.add(responses.GET, message_url("132508"), body=alert_xml)
 
     result = poll_once(warnings_dir)
 
     assert result.new_ids == ["132514"]
-    assert [c.request.url for c in responses.calls] == [FEED_URL, message_url("132514")]
+    assert result.already_stored == ["132508"]
+    assert [c.request.url for c in responses.calls] == [
+        FEED_URL, message_url("132514"), message_url("132508")
+    ]
+
+
+@responses.activate
+def test_changed_feed_message_replaces_the_archived_copy(make_feed, alert_xml, warnings_dir):
+    changed_alert = alert_xml.replace(b"Flood warning", b"Updated warning")
+    save_message(warnings_dir, "132508", alert_xml)
+    responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
+    responses.add(responses.GET, message_url("132508"), body=changed_alert)
+
+    result = poll_once(warnings_dir)
+
+    assert result.new_ids == []
+    assert result.updated_ids == ["132508"]
+    assert result.already_stored == []
+    assert (warnings_dir / "132508.xml").read_bytes() == changed_alert
 
 
 @responses.activate

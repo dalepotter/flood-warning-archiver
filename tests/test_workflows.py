@@ -58,4 +58,6 @@ def test_commit_message_names_the_archived_messages():
     message = commit["with"]["commit_message"]
     assert "steps.poll.outputs.new_count" in message
     assert "steps.poll.outputs.new_ids" in message
+    assert "steps.poll.outputs.updated_count" in message
+    assert "steps.poll.outputs.updated_ids" in message
     assert "steps.poll.outputs.feed_changed" in message

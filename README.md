@@ -3,18 +3,20 @@
 [![Tests](https://github.com/dalepotter/flood-warning-archiver/actions/workflows/test.yml/badge.svg)](https://github.com/dalepotter/flood-warning-archiver/actions/workflows/test.yml)
 
 Archives Environment Agency (EA) flood warning messages, in Common Alerting Protocol (CAP) format, as raw
-XML. A GitHub Actions workflow polls the EA feed every hour and commits any new messages to this
-repository.
+XML. A GitHub Actions workflow polls the EA feed every hour and commits new or changed messages to
+this repository.
 
 ## How it works
 
 1. Read the EA CAP ATOM feed (`https://cap-xml.prd.defra.cloud/v2/messages.atom`). The feed is only an
    index: each entry points at a full CAP message and carries no warning content.
-2. For every entry whose message ID is not already in `warnings/`, fetch `/v2/message/<id>`. Messages
-   named in a fetched message's `references` are fetched too if they are not yet archived, because
-   superseded messages can leave the index while remaining retrievable.
+2. Fetch `/v2/message/<id>` for every entry, including messages already in `warnings/`, so the
+   archived copy can be checked for changes. Messages named in a newly saved or changed message's
+   `references` are fetched too if they are not yet archived, because superseded messages can leave
+   the index while remaining retrievable.
 3. Check the response is a CAP 1.2 `alert` (so an error page is never archived).
-4. Save the bytes **exactly as received** as `warnings/<id>.xml`. Existing files are never overwritten.
+4. Save the bytes **exactly as received** as `warnings/<id>.xml`. If the fetched bytes differ from an
+   existing copy, replace it atomically; the poll workflow commits the updated file.
 5. Save the index itself, as received, to `feed/messages.atom`, replacing the previous copy. The file is
    only rewritten (and so only committed) when its content has changed, ignoring changes to the
    feed-level `<updated>` timestamp; git history keeps earlier versions. A feed that fails to parse
@@ -65,7 +67,7 @@ Tests never call the live EA service; HTTP is mocked.
 ## Automation
 
 `.github/workflows/poll.yml` runs hourly (at 17 minutes past) and on demand (Actions tab → "Poll CAP
-feed" → "Run workflow"). New messages are committed to `main` by `github-actions[bot]` using
+feed" → "Run workflow"). New and updated messages are committed to `main` by `github-actions[bot]` using
 [git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action), for example
 `data: Archive 2 new CAP message(s) (132562, 132570)`. Each run's summary lists what was archived and
 what failed. If polling fails, messages archived before the failure are still committed and the run is
@@ -92,7 +94,8 @@ limit or a service level agreement.
 - **Messages can leave the feed before we see them.** Entries have been observed to disappear from the
   index while the message stayed retrievable. Following `references` recovers most, but not necessarily
   all, of them, so the archive is best-effort, not guaranteed complete.
-- **Immutability is assumed, not confirmed.** Each message is fetched once and never re-checked.
+- **Updates are detected only while a message remains in the feed.** Messages that have left the
+  index are not periodically re-fetched unless a newly saved or changed message references them.
 - **Absence from the feed does not mean a warning has been withdrawn.** Withdrawals are published as new
   messages (`msgType` `Cancel`, with `references`). Do not use this archive to decide what is currently in
   force without interpreting those fields.

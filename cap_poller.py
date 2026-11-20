@@ -106,13 +106,13 @@ def is_stored(warnings_dir: Path, message_id: str) -> bool:
 
 
 def save_message(warnings_dir: Path, message_id: str, content: bytes) -> bool:
-    """Write the raw bytes unchanged. Returns False (and writes nothing) if already stored.
+    """Write the raw bytes unchanged if new or different; return whether a write occurred.
 
     Writes to a temporary file in the same folder and renames it, so an interrupted run
     can never leave a half-written .xml file behind to be committed.
     """
     path = message_path(warnings_dir, message_id)
-    if path.exists():
+    if path.exists() and path.read_bytes() == content:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
@@ -216,6 +216,7 @@ def message_url(message_id: str) -> str:
 @dataclass
 class PollResult:
     new_ids: list[str] = field(default_factory=list)
+    updated_ids: list[str] = field(default_factory=list)
     already_stored: list[str] = field(default_factory=list)
     failed: dict[str, str] = field(default_factory=dict)  # message id -> reason
     unavailable_references: dict[str, str] = field(default_factory=dict)  # not a failure
@@ -246,9 +247,9 @@ def poll_once(
     session: requests.Session | None = None,
     feed_path: Path = FEED_ARCHIVE_PATH,
 ) -> PollResult:
-    """Fetch the index, archive it if changed, then fetch, validate and save every message not yet archived.
+    """Fetch the index, archive it if changed, then reconcile every listed message.
 
-    Messages named in the `references` of a newly archived message are fetched too, because
+    Messages named in the `references` of a new or changed message are fetched too, because
     superseded messages can leave the index while remaining retrievable by ID.
     """
     session = session or requests.Session()
@@ -263,9 +264,8 @@ def poll_once(
         if message_id in seen:
             continue
         seen.add(message_id)
-        if is_stored(warnings_dir, message_id):
-            if not via_reference:
-                result.already_stored.append(message_id)
+        stored = is_stored(warnings_dir, message_id)
+        if stored and via_reference:
             continue
         try:
             content = fetch(message_url(message_id), session)
@@ -278,9 +278,14 @@ def poll_once(
                 logger.error("Not archiving message %s: %s", message_id, exc)
                 result.failed[message_id] = str(exc)
             continue
-        save_message(warnings_dir, message_id, content)
-        result.new_ids.append(message_id)
-        pending.extend((ref, True) for ref in referenced_message_ids(content))
+        if save_message(warnings_dir, message_id, content):
+            if stored:
+                result.updated_ids.append(message_id)
+            else:
+                result.new_ids.append(message_id)
+            pending.extend((ref, True) for ref in referenced_message_ids(content))
+        elif not via_reference:
+            result.already_stored.append(message_id)
     return result
 
 
@@ -289,6 +294,7 @@ def format_summary(result: PollResult) -> str:
         "## CAP feed poll",
         "",
         f"- New messages archived: {len(result.new_ids)}",
+        f"- Existing messages updated: {len(result.updated_ids)}",
         f"- Already archived: {len(result.already_stored)}",
         f"- Failed: {len(result.failed)}",
         f"- Referenced but unavailable: {len(result.unavailable_references)}",
@@ -296,6 +302,8 @@ def format_summary(result: PollResult) -> str:
     ]
     if result.new_ids:
         lines += ["", "### New", *[f"- {message_id}" for message_id in result.new_ids]]
+    if result.updated_ids:
+        lines += ["", "### Updated", *[f"- {message_id}" for message_id in result.updated_ids]]
     if result.failed:
         lines += ["", "### Failed", *[f"- {message_id}: {reason}" for message_id, reason in result.failed.items()]]
     return "\n".join(lines) + "\n"
@@ -308,6 +316,8 @@ def write_github_outputs(result: PollResult, environ=None) -> None:
         with open(output_path, "a", encoding="utf-8") as f:
             f.write(f"new_count={len(result.new_ids)}\n")
             f.write(f"new_ids={', '.join(result.new_ids)}\n")
+            f.write(f"updated_count={len(result.updated_ids)}\n")
+            f.write(f"updated_ids={', '.join(result.updated_ids)}\n")
             f.write(f"feed_changed={'true' if result.feed_changed else 'false'}\n")
     if summary_path := environ.get("GITHUB_STEP_SUMMARY"):
         with open(summary_path, "a", encoding="utf-8") as f:
@@ -336,8 +346,8 @@ def main(argv: list[str] | None = None) -> int:
 
     write_github_outputs(result)
     logger.info(
-        "Archived %d new message(s); %d already archived; %d failed",
-        len(result.new_ids), len(result.already_stored), len(result.failed),
+        "Archived %d new message(s), updated %d existing message(s); %d unchanged; %d failed",
+        len(result.new_ids), len(result.updated_ids), len(result.already_stored), len(result.failed),
     )
     return 1 if result.failed else 0
 

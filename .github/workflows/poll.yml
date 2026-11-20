@@ -41,10 +41,10 @@ jobs:
         continue-on-error: true   # still commit anything archived before a partial failure
         run: python cap_poller.py
 
-      - name: Commit new warnings
+      - name: Commit archived messages
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "data: Archive ${{ steps.poll.outputs.new_count }} new CAP message(s) (${{ steps.poll.outputs.new_ids }}); feed changed: ${{ steps.poll.outputs.feed_changed }}"
+          commit_message: "data: Archive CAP messages (new: ${{ steps.poll.outputs.new_count }} (${{ steps.poll.outputs.new_ids }}); updated: ${{ steps.poll.outputs.updated_count }} (${{ steps.poll.outputs.updated_ids }})); feed changed: ${{ steps.poll.outputs.feed_changed }}"
           file_pattern: "warnings/*.xml feed/messages.atom"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
