@@ -309,6 +309,47 @@ def format_summary(result: PollResult) -> str:
     return "\n".join(lines) + "\n"
 
 
+def format_commit_message(result: PollResult) -> str:
+    """Build a concise commit title and include message IDs when useful."""
+    categories = []
+    if result.new_ids:
+        categories.append((len(result.new_ids), "new"))
+    if result.updated_ids:
+        categories.append((len(result.updated_ids), "updated"))
+
+    if len(categories) == 2:
+        title = (
+            f"data: Archive {categories[0][0]} new and "
+            f"{categories[1][0]} updated CAP messages"
+        )
+    elif result.new_ids:
+        if len(result.new_ids) == 1:
+            title = f"data: Archive CAP message {result.new_ids[0]}"
+        else:
+            title = f"data: Archive {len(result.new_ids)} new CAP messages"
+    elif result.updated_ids:
+        if len(result.updated_ids) == 1:
+            title = f"data: Update CAP message {result.updated_ids[0]}"
+        else:
+            title = f"data: Update {len(result.updated_ids)} CAP messages"
+    elif result.feed_changed:
+        title = "data: Update CAP feed index"
+    else:
+        title = "data: Poll CAP feed"
+
+    details = []
+    if result.new_ids and len(result.new_ids) > 1:
+        details.append(f"New: {', '.join(result.new_ids)}")
+    if result.updated_ids and len(result.updated_ids) > 1:
+        details.append(f"Updated: {', '.join(result.updated_ids)}")
+    if result.new_ids and result.updated_ids:
+        details = [
+            f"New: {', '.join(result.new_ids)}",
+            f"Updated: {', '.join(result.updated_ids)}",
+        ]
+    return f"{title}\n\n" + "\n".join(details) if details else title
+
+
 def write_github_outputs(result: PollResult, environ=None) -> None:
     """Expose results to GitHub Actions. Does nothing when run outside Actions."""
     environ = os.environ if environ is None else environ
@@ -319,6 +360,9 @@ def write_github_outputs(result: PollResult, environ=None) -> None:
             f.write(f"updated_count={len(result.updated_ids)}\n")
             f.write(f"updated_ids={', '.join(result.updated_ids)}\n")
             f.write(f"feed_changed={'true' if result.feed_changed else 'false'}\n")
+            f.write("commit_message<<EOF\n")
+            f.write(f"{format_commit_message(result)}\n")
+            f.write("EOF\n")
     if summary_path := environ.get("GITHUB_STEP_SUMMARY"):
         with open(summary_path, "a", encoding="utf-8") as f:
             f.write(format_summary(result))

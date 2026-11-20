@@ -56,8 +56,4 @@ def test_commit_message_names_the_archived_messages():
     steps = data["jobs"]["poll"]["steps"]
     commit = next(s for s in steps if s.get("uses", "").startswith("stefanzweifel/git-auto-commit-action@"))
     message = commit["with"]["commit_message"]
-    assert "steps.poll.outputs.new_count" in message
-    assert "steps.poll.outputs.new_ids" in message
-    assert "steps.poll.outputs.updated_count" in message
-    assert "steps.poll.outputs.updated_ids" in message
-    assert "steps.poll.outputs.feed_changed" in message
+    assert message == "${{ steps.poll.outputs.commit_message }}"
