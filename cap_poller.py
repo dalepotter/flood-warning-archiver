@@ -2,6 +2,8 @@
 """Poll the Environment Agency CAP ATOM feed and archive new CAP messages as raw XML."""
 
 import argparse
+import csv
+import io
 import logging
 import os
 import re
@@ -19,6 +21,11 @@ BASE_URL = "https://cap-xml.prd.defra.cloud/v2"
 FEED_URL = f"{BASE_URL}/messages.atom"
 WARNINGS_DIR = Path("warnings")
 FEED_ARCHIVE_PATH = Path("feed/messages.atom")
+ALERTS_CSV_PATH = Path("alerts.csv")
+ALERT_FIELDS = [
+    "message_id", "sent", "msgType", "responseType", "urgency", "severity", "certainty",
+    "onset", "expires", "headline", "awareness_level", "awareness_type", "impacts", "references",
+]
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
 CAP_NS = "urn:oasis:names:tc:emergency:cap:1.2"
@@ -209,6 +216,92 @@ def validate_cap_message(content: bytes) -> None:
         raise InvalidMessageError(f"Unexpected root element: {root.tag}")
 
 
+def alert_record(message_id: str, content: bytes) -> dict[str, str]:
+    """Extract a CSV row without modifying the source XML."""
+    message_path(WARNINGS_DIR, message_id)
+    validate_cap_message(content)
+    root = ET.fromstring(content)
+    record = dict.fromkeys(ALERT_FIELDS, "")
+    record["message_id"] = message_id
+    record["references"] = "|".join(referenced_message_ids(content))
+    for name in ("sent", "msgType"):
+        record[name] = root.findtext(f"{{{CAP_NS}}}{name}", default="")
+    infos = root.findall(f"{{{CAP_NS}}}info")
+    if len(infos) > 1:
+        raise InvalidMessageError(f"Message {message_id} has multiple info blocks; cannot represent as one CSV row")
+    if not infos:
+        logger.warning("Message %s has no info block; CSV info fields will be empty", message_id)
+        return record
+    info = infos[0]
+    for name in ("urgency", "severity", "certainty", "onset", "expires", "headline"):
+        record[name] = info.findtext(f"{{{CAP_NS}}}{name}", default="")
+    for name in ("responseType", "awareness_level", "awareness_type", "impacts"):
+        if name == "responseType":
+            values = [element.text or "" for element in info.findall(f"{{{CAP_NS}}}responseType")]
+        else:
+            values = [
+                parameter.findtext(f"{{{CAP_NS}}}value", default="")
+                for parameter in info.findall(f"{{{CAP_NS}}}parameter")
+                if parameter.findtext(f"{{{CAP_NS}}}valueName") == name
+            ]
+        record[name] = "; ".join(values)
+    return record
+
+
+def read_alert_records(path: Path) -> dict[str, dict[str, str]]:
+    if not path.exists():
+        return {}
+    records = {}
+    with path.open(encoding="utf-8", newline="") as source:
+        reader = csv.DictReader(source, strict=True)
+        if reader.fieldnames != ALERT_FIELDS:
+            raise ValueError(f"Unexpected CSV header in {path}")
+        for row in reader:
+            if None in row or any(value is None for value in row.values()):
+                raise ValueError(f"Invalid CSV row in {path} at line {reader.line_num}")
+            message_id = row["message_id"]
+            message_path(WARNINGS_DIR, message_id)
+            if message_id in records:
+                raise ValueError(f"Duplicate message id {message_id} in {path}")
+            records[message_id] = row
+    return records
+
+
+def save_alert_records(path: Path, records: dict[str, dict[str, str]]) -> bool:
+    """Write a deterministic UTF-8 CSV atomically, only when its bytes change."""
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=ALERT_FIELDS, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(records[key] for key in sorted(records, key=lambda key: (int(key), key)))
+    content = output.getvalue().encode("utf-8")
+    if path.exists() and path.read_bytes() == content:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as tmp:
+            tmp.write(content)
+        os.replace(tmp_name, path)
+    except BaseException:
+        Path(tmp_name).unlink(missing_ok=True)
+        raise
+    return True
+
+
+def backfill_alert_records(warnings_dir: Path, csv_path: Path) -> int:
+    """Rebuild the CSV from local archived messages using the polling extractor."""
+    if not warnings_dir.is_dir():
+        raise ValueError(f"Archive directory does not exist: {warnings_dir}")
+    records = {}
+    for path in sorted(warnings_dir.glob("*.xml")):
+        if not MESSAGE_ID_PATTERN.fullmatch(path.stem):
+            logger.warning("Skipping archive file with unusable message id: %s", path)
+            continue
+        records[path.stem] = alert_record(path.stem, path.read_bytes())
+    save_alert_records(csv_path, records)
+    return len(records)
+
+
 def message_url(message_id: str) -> str:
     return f"{BASE_URL}/message/{message_id}"
 
@@ -221,6 +314,7 @@ class PollResult:
     failed: dict[str, str] = field(default_factory=dict)  # message id -> reason
     unavailable_references: dict[str, str] = field(default_factory=dict)  # not a failure
     feed_changed: bool = False
+    csv_changed: bool = False
 
 
 def referenced_message_ids(content: bytes) -> list[str]:
@@ -246,6 +340,7 @@ def poll_once(
     warnings_dir: Path = WARNINGS_DIR,
     session: requests.Session | None = None,
     feed_path: Path = FEED_ARCHIVE_PATH,
+    csv_path: Path = ALERTS_CSV_PATH,
 ) -> PollResult:
     """Fetch the index, archive it if changed, then reconcile every listed message.
 
@@ -253,6 +348,7 @@ def poll_once(
     superseded messages can leave the index while remaining retrievable by ID.
     """
     session = session or requests.Session()
+    records = read_alert_records(csv_path)
     feed_bytes = fetch(FEED_URL, session)
     entries = parse_feed(feed_bytes)  # rejects a malformed feed before anything is saved
     result = PollResult()
@@ -278,6 +374,12 @@ def poll_once(
                 logger.error("Not archiving message %s: %s", message_id, exc)
                 result.failed[message_id] = str(exc)
             continue
+        try:
+            record = alert_record(message_id, content)
+        except InvalidMessageError as exc:
+            logger.error("Could not record message %s in CSV: %s", message_id, exc)
+            result.failed[message_id] = str(exc)
+            record = None
         if save_message(warnings_dir, message_id, content):
             if stored:
                 result.updated_ids.append(message_id)
@@ -286,6 +388,9 @@ def poll_once(
             pending.extend((ref, True) for ref in referenced_message_ids(content))
         elif not via_reference:
             result.already_stored.append(message_id)
+        if record is not None:
+            records[message_id] = record
+    result.csv_changed = save_alert_records(csv_path, records)
     return result
 
 
@@ -299,6 +404,7 @@ def format_summary(result: PollResult) -> str:
         f"- Failed: {len(result.failed)}",
         f"- Referenced but unavailable: {len(result.unavailable_references)}",
         f"- Feed updated: {'yes' if result.feed_changed else 'no'}",
+        f"- Alerts CSV updated: {'yes' if result.csv_changed else 'no'}",
     ]
     if result.new_ids:
         lines += ["", "### New", *[f"- {message_id}" for message_id in result.new_ids]]
@@ -334,6 +440,8 @@ def format_commit_message(result: PollResult) -> str:
             title = f"data: Update {len(result.updated_ids)} CAP messages"
     elif result.feed_changed:
         title = "data: Update CAP feed index"
+    elif result.csv_changed:
+        title = "data: Update CAP alert records"
     else:
         title = "data: Poll CAP feed"
 
@@ -375,6 +483,8 @@ def main(argv: list[str] | None = None) -> int:
         "--feed-file", type=Path, default=FEED_ARCHIVE_PATH, help="archived copy of the index (default: feed/messages.atom)"
     )
     parser.add_argument("-v", "--verbose", action="store_true", help="debug logging")
+    parser.add_argument("--csv-file", type=Path, default=ALERTS_CSV_PATH, help="alert records CSV (default: alerts.csv)")
+    parser.add_argument("--backfill-csv", action="store_true", help="rebuild CSV from archived XML without fetching the feed")
     args = parser.parse_args(argv)
 
     logging.basicConfig(
@@ -382,10 +492,22 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)s %(message)s",
     )
 
+    if args.backfill_csv:
+        try:
+            count = backfill_alert_records(args.warnings_dir, args.csv_file)
+        except (OSError, ValueError, InvalidMessageError, csv.Error) as exc:
+            logger.error("Could not backfill alerts CSV: %s", exc)
+            return 1
+        logger.info("Recorded %d archived message(s) in %s", count, args.csv_file)
+        return 0
+
     try:
-        result = poll_once(args.warnings_dir, feed_path=args.feed_file)
+        result = poll_once(args.warnings_dir, feed_path=args.feed_file, csv_path=args.csv_file)
     except (FetchError, FeedParseError) as exc:
         logger.error("Could not read the CAP feed: %s", exc)
+        return 1
+    except (OSError, ValueError, csv.Error) as exc:
+        logger.error("Could not maintain the CAP archive: %s", exc)
         return 1
 
     write_github_outputs(result)

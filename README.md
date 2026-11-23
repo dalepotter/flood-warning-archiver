@@ -21,6 +21,20 @@ this repository.
    only rewritten (and so only committed) when its content has changed, ignoring changes to the
    feed-level `<updated>` timestamp; git history keeps earlier versions. A feed that fails to parse
    is never saved.
+6. Maintain `alerts.csv`, adding a row for each successfully fetched message and replacing its row
+   when it changes. The workflow commits the CSV alongside the XML and feed.
+
+The CSV contains `message_id`, `sent`, `msgType`, `responseType`, `urgency`, `severity`,
+`certainty`, `onset`, `expires`, `headline`, `awareness_level`, `awareness_type`, `impacts`, and
+`references`. The awareness and impacts fields are matched by the CAP parameter's `valueName`.
+The `references` column contains referenced message IDs separated by `|`, for example
+`132629|132752|132810`. IDs retain their source order, with duplicates removed; no references
+produces an empty cell. Values are preserved as text;
+missing optional fields are empty. Repeated response types or matching parameters are joined with
+`; `. Rows are sorted by numeric message ID and quoted using standard CSV escaping.
+Each message has one row (including updates and cancellations). Multiple `info` blocks cannot be
+represented by this schema: the raw XML is still archived, but a CSV failure is reported rather than
+silently selecting a block. The CSV holds the latest recorded values; Git retains previous versions.
 
 Message IDs are validated as digits only, because they become filenames.
 
@@ -50,7 +64,14 @@ python cap_poller.py                         # archive into ./warnings
 python cap_poller.py --warnings-dir /tmp/w   # archive somewhere else
 python cap_poller.py --feed-file /tmp/f.atom # keep the index copy somewhere else
 python cap_poller.py -v                      # debug logging
+python cap_poller.py --csv-file /tmp/alerts.csv # keep alert records somewhere else
+python cap_poller.py --backfill-csv           # rebuild alerts.csv from all local warnings/*.xml
 ```
+
+The offline backfill uses the same extractor and CSV writer as polling, makes no HTTP requests,
+and replaces the CSV with records from the archive. Re-running it with unchanged XML is a no-op.
+Normal polling records successfully fetched messages even if their XML is unchanged, so a missing
+CSV row can be recovered without re-archiving the message. Missing historical messages require a backfill.
 
 Exit codes: `0` success (including "nothing new"); `1` the feed could not be read, or at least one message
 could not be archived (the others are still saved, and failures are retried on the next run).

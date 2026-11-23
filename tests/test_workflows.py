@@ -33,7 +33,7 @@ def test_poll_workflow_only_commits_archived_messages_and_the_feed():
     data, _ = load_workflow()
     steps = data["jobs"]["poll"]["steps"]
     commit = next(s for s in steps if s.get("uses", "").startswith("stefanzweifel/git-auto-commit-action@"))
-    assert commit["with"]["file_pattern"].split() == ["warnings/*.xml", "feed/messages.atom"]
+    assert commit["with"]["file_pattern"].split() == ["warnings/*.xml", "feed/messages.atom", "alerts.csv"]
 
 
 def test_poll_workflow_checks_out_the_branch_head_not_the_triggering_sha():
