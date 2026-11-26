@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cap-xml.prd.defra.cloud/v2/messages.atom</id>
     <title>Flood warnings for England</title>
-    <updated>2026-11-26T15:04:21.114Z</updated>
+    <updated>2026-11-26T23:47:36.184Z</updated>
     <generator>Environment Agency CAP XML flood warnings</generator>
     <author>
         <name>Environment Agency</name>
@@ -13,16 +13,34 @@
     <subtitle>Flood warnings for England</subtitle>
     <rights>Copyright, Environment Agency. Licensed under Creative Commons BY 4.0</rights>
     <entry>
+        <title type="html"><![CDATA[122WAC954]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/134470</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/134470"/>
+        <updated>2026-11-26T20:43:12.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[114WACT1T1CA00]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/134450</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/134450"/>
+        <updated>2026-11-26T16:25:57.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[114WACT1T1BA00]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/134443</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/134443"/>
+        <updated>2026-11-26T16:25:32.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[114WATFALEST1]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/134447</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/134447"/>
+        <updated>2026-11-26T16:25:27.000Z</updated>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[052WATCSTHUN]]></title>
         <id>https://cap-xml.prd.defra.cloud/v2/message/134437</id>
         <link href="https://cap-xml.prd.defra.cloud/v2/message/134437"/>
         <updated>2026-11-26T13:27:12.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[122WAC954]]></title>
-        <id>https://cap-xml.prd.defra.cloud/v2/message/134433</id>
-        <link href="https://cap-xml.prd.defra.cloud/v2/message/134433"/>
-        <updated>2026-11-26T08:42:50.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[122WAC956]]></title>
