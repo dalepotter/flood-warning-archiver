@@ -178,9 +178,16 @@ Tests never call the live EA service; HTTP is mocked.
 `.github/workflows/poll.yml` runs hourly (at 10 minutes past) and on demand (Actions tab → "Poll CAP
 feed" → "Run workflow"). New and updated messages, the feed index, `alerts.csv` and `alert-chains.yml`
 are committed to `main` by `github-actions[bot]` using
-[git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action), for example
-`data: Archive 2 new CAP message(s) (132562, 132570)`. Each run's summary lists what was archived and
-what failed. If polling fails, messages archived before the failure are still committed and the run is
+[git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action). A single new message
+is committed as `data: Archive CAP message 133652`. When there are several, the IDs go in the body:
+
+```
+data: Archive 2 new CAP messages
+
+New: 132562, 132570
+```
+
+Each run's summary lists what was archived and what failed. If polling fails, messages archived before the failure are still committed and the run is
 marked failed.
 
 Operating notes:
