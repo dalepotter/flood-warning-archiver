@@ -1,0 +1,917 @@
+# Generated from alerts.csv; chains and messages in alerts.csv order (ascending message ID).
+source: alerts.csv
+message_count: 262
+chain_count: 65
+chains:
+  - location: "The tidal Rivers Bure, Ant and Thurne"
+    alert_id: 132629
+    alert_sent: 2026-11-12T08:33:55+00:00
+    status: closed
+    latest_id: 134336
+    latest_sent: 2026-11-25T08:27:13+00:00
+    duration: 13d 0h
+    duration_hours: 312
+    issues: []
+    messages:
+      - {id: 132629, type: Alert, sent: 2026-11-12T08:33:55+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 132752, type: Update, sent: 2026-11-13T08:51:31+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 132810, type: Update, sent: 2026-11-14T09:59:30+00:00, elapsed: 2d 1h, elapsed_hours: 49, level: possible}
+      - {id: 132816, type: Update, sent: 2026-11-14T16:55:53+00:00, elapsed: 2d 8h, elapsed_hours: 56, level: possible}
+      - {id: 132820, type: Update, sent: 2026-11-15T09:00:33+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+      - {id: 132831, type: Update, sent: 2026-11-16T09:00:13+00:00, elapsed: 4d 0h, elapsed_hours: 96, level: possible}
+      - {id: 132958, type: Update, sent: 2026-11-17T09:00:35+00:00, elapsed: 5d 0h, elapsed_hours: 120, level: possible}
+      - {id: 133273, type: Update, sent: 2026-11-18T08:42:01+00:00, elapsed: 6d 0h, elapsed_hours: 144, level: possible}
+      - {id: 133504, type: Update, sent: 2026-11-19T08:59:06+00:00, elapsed: 7d 0h, elapsed_hours: 168, level: possible}
+      - {id: 133616, type: Update, sent: 2026-11-20T08:23:48+00:00, elapsed: 8d 0h, elapsed_hours: 192, level: possible}
+      - {id: 133690, type: Update, sent: 2026-11-21T08:09:30+00:00, elapsed: 9d 0h, elapsed_hours: 216, level: possible}
+      - {id: 133865, type: Update, sent: 2026-11-22T08:11:34+00:00, elapsed: 10d 0h, elapsed_hours: 240, level: possible}
+      - {id: 134010, type: Update, sent: 2026-11-23T08:31:12+00:00, elapsed: 11d 0h, elapsed_hours: 264, level: possible}
+      - {id: 134182, type: Update, sent: 2026-11-24T08:26:31+00:00, elapsed: 12d 0h, elapsed_hours: 288, level: possible}
+      - {id: 134336, type: Cancel, sent: 2026-11-25T08:27:13+00:00, elapsed: 13d 0h, elapsed_hours: 312, level: possible}
+  - location: "Upper River Tamar"
+    alert_id: 132860
+    alert_sent: 2026-11-16T14:38:59+00:00
+    status: closed
+    latest_id: 134370
+    latest_sent: 2026-11-25T11:03:05+00:00
+    duration: 8d 20h
+    duration_hours: 212
+    issues: []
+    messages:
+      - {id: 132860, type: Alert, sent: 2026-11-16T14:38:59+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133015, type: Update, sent: 2026-11-17T10:22:21+00:00, elapsed: 0d 20h, elapsed_hours: 20, level: possible}
+      - {id: 133363, type: Update, sent: 2026-11-18T12:22:20+00:00, elapsed: 1d 22h, elapsed_hours: 46, level: possible}
+      - {id: 133546, type: Update, sent: 2026-11-19T11:04:29+00:00, elapsed: 2d 20h, elapsed_hours: 68, level: possible}
+      - {id: 133642, type: Update, sent: 2026-11-20T11:13:14+00:00, elapsed: 3d 21h, elapsed_hours: 93, level: possible}
+      - {id: 133714, type: Update, sent: 2026-11-21T11:15:22+00:00, elapsed: 4d 21h, elapsed_hours: 117, level: possible}
+      - {id: 133879, type: Update, sent: 2026-11-22T10:57:10+00:00, elapsed: 5d 20h, elapsed_hours: 140, level: possible}
+      - {id: 134024, type: Update, sent: 2026-11-23T11:03:58+00:00, elapsed: 6d 20h, elapsed_hours: 164, level: possible}
+      - {id: 134213, type: Update, sent: 2026-11-24T10:29:33+00:00, elapsed: 7d 20h, elapsed_hours: 188, level: possible}
+      - {id: 134370, type: Cancel, sent: 2026-11-25T11:03:05+00:00, elapsed: 8d 20h, elapsed_hours: 212, level: possible}
+  - location: "North Sea coast at Bridlington"
+    alert_id: 132874
+    alert_sent: 2026-11-16T16:00:53+00:00
+    status: closed
+    latest_id: 133295
+    latest_sent: 2026-11-18T09:17:24+00:00
+    duration: 1d 17h
+    duration_hours: 41
+    issues: []
+    messages:
+      - {id: 132874, type: Alert, sent: 2026-11-16T16:00:53+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 132888, type: Update, sent: 2026-11-16T20:59:44+00:00, elapsed: 0d 5h, elapsed_hours: 5, level: possible}
+      - {id: 132952, type: Update, sent: 2026-11-17T08:43:06+00:00, elapsed: 0d 17h, elapsed_hours: 17, level: possible}
+      - {id: 133190, type: Update, sent: 2026-11-17T20:56:49+00:00, elapsed: 1d 5h, elapsed_hours: 29, level: possible}
+      - {id: 133295, type: Cancel, sent: 2026-11-18T09:17:24+00:00, elapsed: 1d 17h, elapsed_hours: 41, level: possible}
+  - location: "Christchurch Harbour"
+    alert_id: 132880
+    alert_sent: 2026-11-16T16:06:17+00:00
+    status: closed
+    latest_id: 133556
+    latest_sent: 2026-11-19T11:14:46+00:00
+    duration: 2d 19h
+    duration_hours: 67
+    issues: []
+    messages:
+      - {id: 132880, type: Alert, sent: 2026-11-16T16:06:17+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133098, type: Update, sent: 2026-11-17T15:30:34+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 133416, type: Update, sent: 2026-11-18T16:12:46+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+      - {id: 133556, type: Cancel, sent: 2026-11-19T11:14:46+00:00, elapsed: 2d 19h, elapsed_hours: 67, level: possible}
+  - location: "River Sow and River Penk"
+    alert_id: 132892
+    alert_sent: 2026-11-17T05:22:52+00:00
+    status: closed
+    latest_id: 133548
+    latest_sent: 2026-11-19T10:28:35+00:00
+    duration: 2d 5h
+    duration_hours: 53
+    issues: [update_after_cancel]
+    messages:
+      - {id: 132892, type: Alert, sent: 2026-11-17T05:22:52+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133319, type: Cancel, sent: 2026-11-18T09:17:16+00:00, elapsed: 1d 4h, elapsed_hours: 28, level: possible}
+      - {id: 133462, type: Update, sent: 2026-11-18T17:59:12+00:00, elapsed: 1d 13h, elapsed_hours: 37, level: possible}
+      - {id: 133548, type: Cancel, sent: 2026-11-19T10:28:35+00:00, elapsed: 2d 5h, elapsed_hours: 53, level: possible}
+  - location: "Upper Bristol Avon area"
+    alert_id: 132907
+    alert_sent: 2026-11-17T07:08:06+00:00
+    status: closed
+    latest_id: 133992
+    latest_sent: 2026-11-22T15:17:07+00:00
+    duration: 5d 8h
+    duration_hours: 128
+    issues: [duplicate_cancel]
+    messages:
+      - {id: 132907, type: Alert, sent: 2026-11-17T07:08:06+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133170, type: Update, sent: 2026-11-17T17:22:19+00:00, elapsed: 0d 10h, elapsed_hours: 10, level: possible}
+      - {id: 133256, type: Update, sent: 2026-11-18T08:34:47+00:00, elapsed: 1d 1h, elapsed_hours: 25, level: possible}
+      - {id: 133426, type: Update, sent: 2026-11-18T16:30:56+00:00, elapsed: 1d 9h, elapsed_hours: 33, level: possible}
+      - {id: 133586, type: Update, sent: 2026-11-19T15:18:07+00:00, elapsed: 2d 8h, elapsed_hours: 56, level: possible}
+      - {id: 133675, type: Update, sent: 2026-11-20T16:34:22+00:00, elapsed: 3d 9h, elapsed_hours: 81, level: possible}
+      - {id: 133751, type: Update, sent: 2026-11-21T14:08:13+00:00, elapsed: 4d 7h, elapsed_hours: 103, level: possible}
+      - {id: 133986, type: Cancel, sent: 2026-11-22T15:15:39+00:00, elapsed: 5d 8h, elapsed_hours: 128, level: possible}
+      - {id: 133992, type: Cancel, sent: 2026-11-22T15:17:07+00:00, elapsed: 5d 8h, elapsed_hours: 128, level: possible}
+  - location: "River Cole"
+    alert_id: 132910
+    alert_sent: 2026-11-17T07:06:44+00:00
+    status: closed
+    latest_id: 133216
+    latest_sent: 2026-11-18T07:55:47+00:00
+    duration: 1d 1h
+    duration_hours: 25
+    issues: []
+    messages:
+      - {id: 132910, type: Alert, sent: 2026-11-17T07:06:44+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133216, type: Cancel, sent: 2026-11-18T07:55:47+00:00, elapsed: 1d 1h, elapsed_hours: 25, level: possible}
+  - location: "River Blythe in Warwickshire"
+    alert_id: 132950
+    alert_sent: 2026-11-17T09:15:48+00:00
+    status: closed
+    latest_id: 133229
+    latest_sent: 2026-11-18T08:04:06+00:00
+    duration: 0d 23h
+    duration_hours: 23
+    issues: []
+    messages:
+      - {id: 132950, type: Alert, sent: 2026-11-17T09:15:48+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133229, type: Cancel, sent: 2026-11-18T08:04:06+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+  - location: "Lower River Soar in Leicestershire"
+    alert_id: 132956
+    alert_sent: 2026-11-17T08:58:07+00:00
+    status: closed
+    latest_id: 133634
+    latest_sent: 2026-11-20T09:27:57+00:00
+    duration: 3d 0h
+    duration_hours: 72
+    issues: []
+    messages:
+      - {id: 132956, type: Alert, sent: 2026-11-17T08:58:07+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133148, type: Update, sent: 2026-11-17T16:46:51+00:00, elapsed: 0d 8h, elapsed_hours: 8, level: possible}
+      - {id: 133247, type: Update, sent: 2026-11-18T08:19:54+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 133444, type: Update, sent: 2026-11-18T16:48:26+00:00, elapsed: 1d 8h, elapsed_hours: 32, level: possible}
+      - {id: 133518, type: Update, sent: 2026-11-19T09:15:20+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+      - {id: 133596, type: Update, sent: 2026-11-19T16:19:08+00:00, elapsed: 2d 7h, elapsed_hours: 55, level: possible}
+      - {id: 133634, type: Cancel, sent: 2026-11-20T09:27:57+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+  - location: "North Sea coast from Whitby to Filey"
+    alert_id: 132973
+    alert_sent: 2026-11-17T09:19:44+00:00
+    status: closed
+    latest_id: 133293
+    latest_sent: 2026-11-18T09:17:27+00:00
+    duration: 1d 0h
+    duration_hours: 24
+    issues: []
+    messages:
+      - {id: 132973, type: Alert, sent: 2026-11-17T09:19:44+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133192, type: Update, sent: 2026-11-17T20:56:46+00:00, elapsed: 0d 12h, elapsed_hours: 12, level: possible}
+      - {id: 133293, type: Cancel, sent: 2026-11-18T09:17:27+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+  - location: "North Sea at Scarborough - Sandside"
+    alert_id: 132984
+    alert_sent: 2026-11-17T09:23:14+00:00
+    status: closed
+    latest_id: 133282
+    latest_sent: 2026-11-18T09:17:33+00:00
+    duration: 1d 0h
+    duration_hours: 24
+    issues: [level_change]
+    messages:
+      - {id: 132984, type: Alert, sent: 2026-11-17T09:23:14+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: expected}
+      - {id: 133138, type: Update, sent: 2026-11-17T16:43:36+00:00, elapsed: 0d 7h, elapsed_hours: 7, level: expected}
+      - {id: 133202, type: Update, sent: 2026-11-17T23:46:59+00:00, elapsed: 0d 14h, elapsed_hours: 14, level: expected}
+      - {id: 133282, type: Cancel, sent: 2026-11-18T09:17:33+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+  - location: "River Anker and River Sence"
+    alert_id: 133009
+    alert_sent: 2026-11-17T10:09:24+00:00
+    status: closed
+    latest_id: 133512
+    latest_sent: 2026-11-19T09:13:27+00:00
+    duration: 1d 23h
+    duration_hours: 47
+    issues: []
+    messages:
+      - {id: 133009, type: Alert, sent: 2026-11-17T10:09:24+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133228, type: Update, sent: 2026-11-18T08:06:09+00:00, elapsed: 0d 22h, elapsed_hours: 22, level: possible}
+      - {id: 133389, type: Update, sent: 2026-11-18T14:42:20+00:00, elapsed: 1d 5h, elapsed_hours: 29, level: possible}
+      - {id: 133512, type: Cancel, sent: 2026-11-19T09:13:27+00:00, elapsed: 1d 23h, elapsed_hours: 47, level: possible}
+  - location: "Mid Bristol Avon area"
+    alert_id: 133023
+    alert_sent: 2026-11-17T11:16:36+00:00
+    status: closed
+    latest_id: 133998
+    latest_sent: 2026-11-22T15:18:51+00:00
+    duration: 5d 4h
+    duration_hours: 124
+    issues: []
+    messages:
+      - {id: 133023, type: Alert, sent: 2026-11-17T11:16:36+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133174, type: Update, sent: 2026-11-17T17:24:25+00:00, elapsed: 0d 6h, elapsed_hours: 6, level: possible}
+      - {id: 133264, type: Update, sent: 2026-11-18T08:37:13+00:00, elapsed: 0d 21h, elapsed_hours: 21, level: possible}
+      - {id: 133417, type: Update, sent: 2026-11-18T16:12:29+00:00, elapsed: 1d 5h, elapsed_hours: 29, level: possible}
+      - {id: 133450, type: Update, sent: 2026-11-18T17:01:28+00:00, elapsed: 1d 6h, elapsed_hours: 30, level: possible}
+      - {id: 133582, type: Update, sent: 2026-11-19T15:15:25+00:00, elapsed: 2d 4h, elapsed_hours: 52, level: possible}
+      - {id: 133684, type: Update, sent: 2026-11-20T16:36:37+00:00, elapsed: 3d 5h, elapsed_hours: 77, level: possible}
+      - {id: 133747, type: Update, sent: 2026-11-21T14:04:34+00:00, elapsed: 4d 3h, elapsed_hours: 99, level: possible}
+      - {id: 133998, type: Cancel, sent: 2026-11-22T15:18:51+00:00, elapsed: 5d 4h, elapsed_hours: 124, level: possible}
+  - location: "The River Bure, Spixworth Beck and surrounding Becks"
+    alert_id: 133033
+    alert_sent: 2026-11-17T12:01:37+00:00
+    status: closed
+    latest_id: 133283
+    latest_sent: 2026-11-18T09:00:15+00:00
+    duration: 0d 21h
+    duration_hours: 21
+    issues: []
+    messages:
+      - {id: 133033, type: Alert, sent: 2026-11-17T12:01:37+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133094, type: Update, sent: 2026-11-17T15:02:49+00:00, elapsed: 0d 3h, elapsed_hours: 3, level: possible}
+      - {id: 133283, type: Cancel, sent: 2026-11-18T09:00:15+00:00, elapsed: 0d 21h, elapsed_hours: 21, level: possible}
+  - location: "Bourne Brook (Tamworth)"
+    alert_id: 133045
+    alert_sent: 2026-11-17T12:06:27+00:00
+    status: closed
+    latest_id: 133395
+    latest_sent: 2026-11-18T14:50:43+00:00
+    duration: 1d 3h
+    duration_hours: 27
+    issues: []
+    messages:
+      - {id: 133045, type: Alert, sent: 2026-11-17T12:06:27+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133222, type: Update, sent: 2026-11-18T08:01:27+00:00, elapsed: 0d 20h, elapsed_hours: 20, level: possible}
+      - {id: 133395, type: Cancel, sent: 2026-11-18T14:50:43+00:00, elapsed: 1d 3h, elapsed_hours: 27, level: possible}
+  - location: "River Cole at Coleshill"
+    alert_id: 133051
+    alert_sent: 2026-11-17T12:31:51+00:00
+    status: closed
+    latest_id: 133210
+    latest_sent: 2026-11-18T07:51:38+00:00
+    duration: 0d 19h
+    duration_hours: 19
+    issues: [level_change]
+    messages:
+      - {id: 133051, type: Alert, sent: 2026-11-17T12:31:51+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: expected}
+      - {id: 133210, type: Cancel, sent: 2026-11-18T07:51:38+00:00, elapsed: 0d 19h, elapsed_hours: 19, level: possible}
+  - location: "River Maun in Nottinghamshire"
+    alert_id: 133057
+    alert_sent: 2026-11-17T12:47:29+00:00
+    status: closed
+    latest_id: 133318
+    latest_sent: 2026-11-18T09:22:16+00:00
+    duration: 0d 21h
+    duration_hours: 21
+    issues: []
+    messages:
+      - {id: 133057, type: Alert, sent: 2026-11-17T12:47:29+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133128, type: Update, sent: 2026-11-17T16:35:15+00:00, elapsed: 0d 4h, elapsed_hours: 4, level: possible}
+      - {id: 133318, type: Cancel, sent: 2026-11-18T09:22:16+00:00, elapsed: 0d 21h, elapsed_hours: 21, level: possible}
+  - location: "Lower River Wear"
+    alert_id: 133063
+    alert_sent: 2026-11-17T13:18:56+00:00
+    status: closed
+    latest_id: 133528
+    latest_sent: 2026-11-19T10:00:07+00:00
+    duration: 1d 21h
+    duration_hours: 45
+    issues: []
+    messages:
+      - {id: 133063, type: Alert, sent: 2026-11-17T13:18:56+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133308, type: Update, sent: 2026-11-18T09:04:31+00:00, elapsed: 0d 20h, elapsed_hours: 20, level: possible}
+      - {id: 133401, type: Update, sent: 2026-11-18T16:20:50+00:00, elapsed: 1d 3h, elapsed_hours: 27, level: possible}
+      - {id: 133528, type: Cancel, sent: 2026-11-19T10:00:07+00:00, elapsed: 1d 21h, elapsed_hours: 45, level: possible}
+  - location: "Tern and Perry catchments"
+    alert_id: 133064
+    alert_sent: 2026-11-17T13:12:54+00:00
+    status: closed
+    latest_id: 133298
+    latest_sent: 2026-11-18T09:02:12+00:00
+    duration: 0d 20h
+    duration_hours: 20
+    issues: []
+    messages:
+      - {id: 133064, type: Alert, sent: 2026-11-17T13:12:54+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133298, type: Cancel, sent: 2026-11-18T09:02:12+00:00, elapsed: 0d 20h, elapsed_hours: 20, level: possible}
+  - location: "Coastal rivers in North Northumberland"
+    alert_id: 133081
+    alert_sent: 2026-11-17T13:27:09+00:00
+    status: closed
+    latest_id: 133312
+    latest_sent: 2026-11-18T09:11:30+00:00
+    duration: 0d 20h
+    duration_hours: 20
+    issues: []
+    messages:
+      - {id: 133081, type: Alert, sent: 2026-11-17T13:27:09+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133312, type: Cancel, sent: 2026-11-18T09:11:30+00:00, elapsed: 0d 20h, elapsed_hours: 20, level: possible}
+  - location: "Bow and Piddle Brook"
+    alert_id: 133087
+    alert_sent: 2026-11-17T14:45:46+00:00
+    status: closed
+    latest_id: 133484
+    latest_sent: 2026-11-19T08:02:43+00:00
+    duration: 1d 17h
+    duration_hours: 41
+    issues: [update_after_cancel]
+    messages:
+      - {id: 133087, type: Alert, sent: 2026-11-17T14:45:46+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133206, type: Update, sent: 2026-11-18T07:30:16+00:00, elapsed: 0d 17h, elapsed_hours: 17, level: possible}
+      - {id: 133245, type: Cancel, sent: 2026-11-18T08:15:58+00:00, elapsed: 0d 18h, elapsed_hours: 18, level: possible}
+      - {id: 133409, type: Update, sent: 2026-11-18T15:47:04+00:00, elapsed: 1d 1h, elapsed_hours: 25, level: possible}
+      - {id: 133484, type: Cancel, sent: 2026-11-19T08:02:43+00:00, elapsed: 1d 17h, elapsed_hours: 41, level: possible}
+  - location: "Upper Avon River Swift and Clay Coton Brook"
+    alert_id: 133104
+    alert_sent: 2026-11-17T15:52:16+00:00
+    status: closed
+    latest_id: 133226
+    latest_sent: 2026-11-18T08:04:16+00:00
+    duration: 0d 16h
+    duration_hours: 16
+    issues: []
+    messages:
+      - {id: 133104, type: Alert, sent: 2026-11-17T15:52:16+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133226, type: Cancel, sent: 2026-11-18T08:04:16+00:00, elapsed: 0d 16h, elapsed_hours: 16, level: possible}
+  - location: "River Rye catchment"
+    alert_id: 133117
+    alert_sent: 2026-11-17T16:02:34+00:00
+    status: closed
+    latest_id: 133288
+    latest_sent: 2026-11-18T09:17:30+00:00
+    duration: 0d 17h
+    duration_hours: 17
+    issues: []
+    messages:
+      - {id: 133117, type: Alert, sent: 2026-11-17T16:02:34+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133194, type: Update, sent: 2026-11-17T20:56:43+00:00, elapsed: 0d 5h, elapsed_hours: 5, level: possible}
+      - {id: 133288, type: Cancel, sent: 2026-11-18T09:17:30+00:00, elapsed: 0d 17h, elapsed_hours: 17, level: possible}
+  - location: "River Chew catchment"
+    alert_id: 133178
+    alert_sent: 2026-11-17T17:30:11+00:00
+    status: closed
+    latest_id: 133272
+    latest_sent: 2026-11-18T08:39:44+00:00
+    duration: 0d 15h
+    duration_hours: 15
+    issues: []
+    messages:
+      - {id: 133178, type: Alert, sent: 2026-11-17T17:30:11+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133272, type: Cancel, sent: 2026-11-18T08:39:44+00:00, elapsed: 0d 15h, elapsed_hours: 15, level: possible}
+  - location: "Eastern Yar"
+    alert_id: 133259
+    alert_sent: 2026-11-18T08:36:13+00:00
+    status: closed
+    latest_id: 134263
+    latest_sent: 2026-11-24T11:00:17+00:00
+    duration: 6d 2h
+    duration_hours: 146
+    issues: []
+    messages:
+      - {id: 133259, type: Alert, sent: 2026-11-18T08:36:13+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133430, type: Update, sent: 2026-11-18T16:30:03+00:00, elapsed: 0d 8h, elapsed_hours: 8, level: possible}
+      - {id: 133563, type: Update, sent: 2026-11-19T12:37:41+00:00, elapsed: 1d 4h, elapsed_hours: 28, level: possible}
+      - {id: 133652, type: Update, sent: 2026-11-20T12:11:42+00:00, elapsed: 2d 4h, elapsed_hours: 52, level: possible}
+      - {id: 133710, type: Update, sent: 2026-11-21T10:45:38+00:00, elapsed: 3d 2h, elapsed_hours: 74, level: possible}
+      - {id: 133907, type: Update, sent: 2026-11-22T12:00:51+00:00, elapsed: 4d 3h, elapsed_hours: 99, level: possible}
+      - {id: 134068, type: Update, sent: 2026-11-23T11:57:03+00:00, elapsed: 5d 3h, elapsed_hours: 123, level: possible}
+      - {id: 134263, type: Cancel, sent: 2026-11-24T11:00:17+00:00, elapsed: 6d 2h, elapsed_hours: 146, level: possible}
+  - location: "Clanfield Brook for Clanfield Village and the Shill Brook for Bampton"
+    alert_id: 133403
+    alert_sent: 2026-11-18T15:30:39+00:00
+    status: closed
+    latest_id: 134188
+    latest_sent: 2026-11-24T08:53:47+00:00
+    duration: 5d 17h
+    duration_hours: 137
+    issues: []
+    messages:
+      - {id: 133403, type: Alert, sent: 2026-11-18T15:30:39+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133505, type: Update, sent: 2026-11-19T08:48:24+00:00, elapsed: 0d 17h, elapsed_hours: 17, level: possible}
+      - {id: 133600, type: Update, sent: 2026-11-19T16:24:43+00:00, elapsed: 1d 1h, elapsed_hours: 25, level: possible}
+      - {id: 133626, type: Update, sent: 2026-11-20T09:16:16+00:00, elapsed: 1d 18h, elapsed_hours: 42, level: possible}
+      - {id: 133674, type: Update, sent: 2026-11-20T16:33:28+00:00, elapsed: 2d 1h, elapsed_hours: 49, level: possible}
+      - {id: 133700, type: Update, sent: 2026-11-21T08:41:16+00:00, elapsed: 2d 17h, elapsed_hours: 65, level: possible}
+      - {id: 133875, type: Update, sent: 2026-11-22T09:47:44+00:00, elapsed: 3d 18h, elapsed_hours: 90, level: possible}
+      - {id: 134014, type: Update, sent: 2026-11-23T09:20:29+00:00, elapsed: 4d 18h, elapsed_hours: 114, level: possible}
+      - {id: 134188, type: Cancel, sent: 2026-11-24T08:53:47+00:00, elapsed: 5d 17h, elapsed_hours: 137, level: possible}
+  - location: "Upper River Colne and Radlett Brook"
+    alert_id: 133441
+    alert_sent: 2026-11-18T17:13:35+00:00
+    status: closed
+    latest_id: 133492
+    latest_sent: 2026-11-19T08:32:57+00:00
+    duration: 0d 15h
+    duration_hours: 15
+    issues: []
+    messages:
+      - {id: 133441, type: Alert, sent: 2026-11-18T17:13:35+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133492, type: Cancel, sent: 2026-11-19T08:32:57+00:00, elapsed: 0d 15h, elapsed_hours: 15, level: possible}
+  - location: "Lower Lee tributaries"
+    alert_id: 133446
+    alert_sent: 2026-11-18T17:14:13+00:00
+    status: closed
+    latest_id: 133494
+    latest_sent: 2026-11-19T08:34:28+00:00
+    duration: 0d 15h
+    duration_hours: 15
+    issues: []
+    messages:
+      - {id: 133446, type: Alert, sent: 2026-11-18T17:14:13+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133494, type: Cancel, sent: 2026-11-19T08:34:28+00:00, elapsed: 0d 15h, elapsed_hours: 15, level: possible}
+  - location: "River Leadon catchment"
+    alert_id: 133468
+    alert_sent: 2026-11-18T18:45:20+00:00
+    status: closed
+    latest_id: 133476
+    latest_sent: 2026-11-19T07:57:53+00:00
+    duration: 0d 13h
+    duration_hours: 13
+    issues: []
+    messages:
+      - {id: 133468, type: Alert, sent: 2026-11-18T18:45:20+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133476, type: Cancel, sent: 2026-11-19T07:57:53+00:00, elapsed: 0d 13h, elapsed_hours: 13, level: possible}
+  - location: "Upper River Derwent"
+    alert_id: 133522
+    alert_sent: 2026-11-19T09:29:09+00:00
+    status: closed
+    latest_id: 133610
+    latest_sent: 2026-11-19T20:50:00+00:00
+    duration: 0d 11h
+    duration_hours: 11
+    issues: []
+    messages:
+      - {id: 133522, type: Alert, sent: 2026-11-19T09:29:09+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133610, type: Cancel, sent: 2026-11-19T20:50:00+00:00, elapsed: 0d 11h, elapsed_hours: 11, level: possible}
+  - location: "Exmoor Rivers"
+    alert_id: 133569
+    alert_sent: 2026-11-19T15:01:01+00:00
+    status: closed
+    latest_id: 134079
+    latest_sent: 2026-11-23T14:46:56+00:00
+    duration: 4d 0h
+    duration_hours: 96
+    issues: []
+    messages:
+      - {id: 133569, type: Alert, sent: 2026-11-19T15:01:01+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133656, type: Update, sent: 2026-11-20T13:35:02+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 133778, type: Update, sent: 2026-11-21T14:48:55+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+      - {id: 133952, type: Update, sent: 2026-11-22T14:57:45+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+      - {id: 134079, type: Cancel, sent: 2026-11-23T14:46:56+00:00, elapsed: 4d 0h, elapsed_hours: 96, level: possible}
+  - location: "Middle Exe area"
+    alert_id: 133571
+    alert_sent: 2026-11-19T15:00:08+00:00
+    status: closed
+    latest_id: 134093
+    latest_sent: 2026-11-23T14:47:20+00:00
+    duration: 4d 0h
+    duration_hours: 96
+    issues: []
+    messages:
+      - {id: 133571, type: Alert, sent: 2026-11-19T15:00:08+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133660, type: Update, sent: 2026-11-20T13:34:04+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 133764, type: Update, sent: 2026-11-21T14:51:08+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+      - {id: 133941, type: Update, sent: 2026-11-22T14:58:59+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+      - {id: 134093, type: Cancel, sent: 2026-11-23T14:47:20+00:00, elapsed: 4d 0h, elapsed_hours: 96, level: possible}
+  - location: "Barnstaple, Braunton, Ilfracombe and Combe Martin area"
+    alert_id: 133590
+    alert_sent: 2026-11-19T16:08:39+00:00
+    status: closed
+    latest_id: 134076
+    latest_sent: 2026-11-23T14:46:34+00:00
+    duration: 3d 23h
+    duration_hours: 95
+    issues: []
+    messages:
+      - {id: 133590, type: Alert, sent: 2026-11-19T16:08:39+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133658, type: Update, sent: 2026-11-20T13:34:27+00:00, elapsed: 0d 21h, elapsed_hours: 21, level: possible}
+      - {id: 133786, type: Update, sent: 2026-11-21T15:13:14+00:00, elapsed: 1d 23h, elapsed_hours: 47, level: possible}
+      - {id: 133958, type: Update, sent: 2026-11-22T14:55:22+00:00, elapsed: 2d 23h, elapsed_hours: 71, level: possible}
+      - {id: 134076, type: Cancel, sent: 2026-11-23T14:46:34+00:00, elapsed: 3d 23h, elapsed_hours: 95, level: possible}
+  - location: "Tributaries on the Upper River Thames above Cricklade"
+    alert_id: 133604
+    alert_sent: 2026-11-19T17:46:36+00:00
+    status: closed
+    latest_id: 133704
+    latest_sent: 2026-11-21T08:45:01+00:00
+    duration: 1d 15h
+    duration_hours: 39
+    issues: []
+    messages:
+      - {id: 133604, type: Alert, sent: 2026-11-19T17:46:36+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133630, type: Update, sent: 2026-11-20T09:18:16+00:00, elapsed: 0d 16h, elapsed_hours: 16, level: possible}
+      - {id: 133679, type: Update, sent: 2026-11-20T16:35:10+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 133704, type: Cancel, sent: 2026-11-21T08:45:01+00:00, elapsed: 1d 15h, elapsed_hours: 39, level: possible}
+  - location: "The River Bure, Spixworth Beck and surrounding Becks"
+    alert_id: 133620
+    alert_sent: 2026-11-20T09:01:15+00:00
+    status: closed
+    latest_id: 133692
+    latest_sent: 2026-11-21T08:09:30+00:00
+    duration: 0d 23h
+    duration_hours: 23
+    issues: []
+    messages:
+      - {id: 133620, type: Alert, sent: 2026-11-20T09:01:15+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133692, type: Cancel, sent: 2026-11-21T08:09:30+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+  - location: "Middle River Tamar"
+    alert_id: 133640
+    alert_sent: 2026-11-20T11:10:34+00:00
+    status: closed
+    latest_id: 134294
+    latest_sent: 2026-11-24T16:02:05+00:00
+    duration: 4d 5h
+    duration_hours: 101
+    issues: []
+    messages:
+      - {id: 133640, type: Alert, sent: 2026-11-20T11:10:34+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133715, type: Update, sent: 2026-11-21T11:16:47+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 133882, type: Update, sent: 2026-11-22T10:57:56+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+      - {id: 134030, type: Update, sent: 2026-11-23T11:01:11+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+      - {id: 134246, type: Update, sent: 2026-11-24T10:37:23+00:00, elapsed: 3d 23h, elapsed_hours: 95, level: possible}
+      - {id: 134294, type: Cancel, sent: 2026-11-24T16:02:05+00:00, elapsed: 4d 5h, elapsed_hours: 101, level: possible}
+  - location: "River Yealm"
+    alert_id: 133722
+    alert_sent: 2026-11-21T12:53:32+00:00
+    status: closed
+    latest_id: 134298
+    latest_sent: 2026-11-24T16:01:54+00:00
+    duration: 3d 3h
+    duration_hours: 75
+    issues: []
+    messages:
+      - {id: 133722, type: Alert, sent: 2026-11-21T12:53:32+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133885, type: Update, sent: 2026-11-22T11:01:03+00:00, elapsed: 0d 22h, elapsed_hours: 22, level: possible}
+      - {id: 134032, type: Update, sent: 2026-11-23T11:05:24+00:00, elapsed: 1d 22h, elapsed_hours: 46, level: possible}
+      - {id: 134254, type: Update, sent: 2026-11-24T10:40:20+00:00, elapsed: 2d 22h, elapsed_hours: 70, level: possible}
+      - {id: 134298, type: Cancel, sent: 2026-11-24T16:01:54+00:00, elapsed: 3d 3h, elapsed_hours: 75, level: possible}
+  - location: "River Lynher"
+    alert_id: 133724
+    alert_sent: 2026-11-21T12:52:19+00:00
+    status: closed
+    latest_id: 134367
+    latest_sent: 2026-11-25T11:03:24+00:00
+    duration: 3d 22h
+    duration_hours: 94
+    issues: []
+    messages:
+      - {id: 133724, type: Alert, sent: 2026-11-21T12:52:19+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133897, type: Update, sent: 2026-11-22T11:03:23+00:00, elapsed: 0d 22h, elapsed_hours: 22, level: possible}
+      - {id: 134042, type: Update, sent: 2026-11-23T11:29:38+00:00, elapsed: 1d 23h, elapsed_hours: 47, level: possible}
+      - {id: 134232, type: Update, sent: 2026-11-24T10:31:04+00:00, elapsed: 2d 22h, elapsed_hours: 70, level: possible}
+      - {id: 134367, type: Cancel, sent: 2026-11-25T11:03:24+00:00, elapsed: 3d 22h, elapsed_hours: 94, level: possible}
+  - location: "St Austell and Par Rivers"
+    alert_id: 133726
+    alert_sent: 2026-11-21T12:51:43+00:00
+    status: closed
+    latest_id: 134290
+    latest_sent: 2026-11-24T16:02:22+00:00
+    duration: 3d 3h
+    duration_hours: 75
+    issues: []
+    messages:
+      - {id: 133726, type: Alert, sent: 2026-11-21T12:51:43+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133880, type: Update, sent: 2026-11-22T11:00:14+00:00, elapsed: 0d 22h, elapsed_hours: 22, level: possible}
+      - {id: 134028, type: Update, sent: 2026-11-23T11:05:05+00:00, elapsed: 1d 22h, elapsed_hours: 46, level: possible}
+      - {id: 134197, type: Update, sent: 2026-11-24T10:27:17+00:00, elapsed: 2d 22h, elapsed_hours: 70, level: possible}
+      - {id: 134290, type: Cancel, sent: 2026-11-24T16:02:22+00:00, elapsed: 3d 3h, elapsed_hours: 75, level: possible}
+  - location: "Helford and Fal Rivers"
+    alert_id: 133728
+    alert_sent: 2026-11-21T12:50:54+00:00
+    status: closed
+    latest_id: 134364
+    latest_sent: 2026-11-25T11:03:43+00:00
+    duration: 3d 22h
+    duration_hours: 94
+    issues: []
+    messages:
+      - {id: 133728, type: Alert, sent: 2026-11-21T12:50:54+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133886, type: Update, sent: 2026-11-22T10:59:11+00:00, elapsed: 0d 22h, elapsed_hours: 22, level: possible}
+      - {id: 134037, type: Update, sent: 2026-11-23T11:05:49+00:00, elapsed: 1d 22h, elapsed_hours: 46, level: possible}
+      - {id: 134157, type: Update, sent: 2026-11-23T16:34:36+00:00, elapsed: 2d 4h, elapsed_hours: 52, level: possible}
+      - {id: 134203, type: Update, sent: 2026-11-24T10:24:27+00:00, elapsed: 2d 22h, elapsed_hours: 70, level: possible}
+      - {id: 134364, type: Cancel, sent: 2026-11-25T11:03:43+00:00, elapsed: 3d 22h, elapsed_hours: 94, level: possible}
+  - location: "South Devon Rivers"
+    alert_id: 133755
+    alert_sent: 2026-11-21T15:03:18+00:00
+    status: closed
+    latest_id: 134083
+    latest_sent: 2026-11-23T14:45:15+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133755, type: Alert, sent: 2026-11-21T15:03:18+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133948, type: Update, sent: 2026-11-22T14:58:03+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134083, type: Cancel, sent: 2026-11-23T14:45:15+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "River Teign area"
+    alert_id: 133766
+    alert_sent: 2026-11-21T15:01:30+00:00
+    status: closed
+    latest_id: 134087
+    latest_sent: 2026-11-23T14:49:16+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133766, type: Alert, sent: 2026-11-21T15:01:30+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133931, type: Update, sent: 2026-11-22T14:59:56+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134087, type: Cancel, sent: 2026-11-23T14:49:16+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "River Dart area"
+    alert_id: 133770
+    alert_sent: 2026-11-21T14:58:59+00:00
+    status: closed
+    latest_id: 134089
+    latest_sent: 2026-11-23T14:44:53+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133770, type: Alert, sent: 2026-11-21T14:58:59+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133935, type: Update, sent: 2026-11-22T14:59:42+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134089, type: Cancel, sent: 2026-11-23T14:44:53+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "Rivers Otter and Sid, and Exmouth area"
+    alert_id: 133772
+    alert_sent: 2026-11-21T14:56:32+00:00
+    status: closed
+    latest_id: 134095
+    latest_sent: 2026-11-23T14:43:49+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133772, type: Alert, sent: 2026-11-21T14:56:32+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133937, type: Update, sent: 2026-11-22T14:59:27+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134095, type: Cancel, sent: 2026-11-23T14:43:49+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "River Axe area"
+    alert_id: 133774
+    alert_sent: 2026-11-21T14:54:36+00:00
+    status: closed
+    latest_id: 134099
+    latest_sent: 2026-11-23T14:44:21+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133774, type: Alert, sent: 2026-11-21T14:54:36+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133946, type: Update, sent: 2026-11-22T14:58:21+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134099, type: Cancel, sent: 2026-11-23T14:44:21+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "Rivers Clyst and Culm and their tributaries"
+    alert_id: 133776
+    alert_sent: 2026-11-21T14:52:48+00:00
+    status: closed
+    latest_id: 134096
+    latest_sent: 2026-11-23T14:47:42+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133776, type: Alert, sent: 2026-11-21T14:52:48+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133943, type: Update, sent: 2026-11-22T14:58:45+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134096, type: Cancel, sent: 2026-11-23T14:47:42+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "North Dartmoor Rivers"
+    alert_id: 133780
+    alert_sent: 2026-11-21T15:05:18+00:00
+    status: closed
+    latest_id: 134084
+    latest_sent: 2026-11-23T14:48:59+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133780, type: Alert, sent: 2026-11-21T15:05:18+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133956, type: Update, sent: 2026-11-22T14:56:45+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134084, type: Cancel, sent: 2026-11-23T14:48:59+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "Upper Torridge area"
+    alert_id: 133782
+    alert_sent: 2026-11-21T15:08:41+00:00
+    status: closed
+    latest_id: 134081
+    latest_sent: 2026-11-23T14:45:54+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133782, type: Alert, sent: 2026-11-21T15:08:41+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133954, type: Update, sent: 2026-11-22T14:57:27+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134081, type: Cancel, sent: 2026-11-23T14:45:54+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "Mid Devon Rivers"
+    alert_id: 133784
+    alert_sent: 2026-11-21T15:11:01+00:00
+    status: closed
+    latest_id: 134091
+    latest_sent: 2026-11-23T14:48:09+00:00
+    duration: 2d 0h
+    duration_hours: 48
+    issues: []
+    messages:
+      - {id: 133784, type: Alert, sent: 2026-11-21T15:11:01+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133957, type: Update, sent: 2026-11-22T14:55:53+00:00, elapsed: 1d 0h, elapsed_hours: 24, level: possible}
+      - {id: 134091, type: Cancel, sent: 2026-11-23T14:48:09+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+  - location: "South Devon coast from Start Point to Dawlish Warren"
+    alert_id: 133788
+    alert_sent: 2026-11-21T15:05:18+00:00
+    status: closed
+    latest_id: 134399
+    latest_sent: 2026-11-25T14:15:11+00:00
+    duration: 3d 23h
+    duration_hours: 95
+    issues: []
+    messages:
+      - {id: 133788, type: Alert, sent: 2026-11-21T15:05:18+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133844, type: Update, sent: 2026-11-21T15:22:19+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133912, type: Update, sent: 2026-11-22T14:30:28+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 134150, type: Update, sent: 2026-11-23T15:05:49+00:00, elapsed: 2d 0h, elapsed_hours: 48, level: possible}
+      - {id: 134276, type: Update, sent: 2026-11-24T14:30:14+00:00, elapsed: 2d 23h, elapsed_hours: 71, level: possible}
+      - {id: 134399, type: Cancel, sent: 2026-11-25T14:15:11+00:00, elapsed: 3d 23h, elapsed_hours: 95, level: possible}
+  - location: "South Devon coast at Beesands, Torcross, Slapton and Dawlish"
+    alert_id: 133818
+    alert_sent: 2026-11-21T15:18:55+00:00
+    status: closed
+    latest_id: 133922
+    latest_sent: 2026-11-22T14:22:47+00:00
+    duration: 0d 23h
+    duration_hours: 23
+    issues: [level_change]
+    messages:
+      - {id: 133818, type: Alert, sent: 2026-11-21T15:18:55+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: expected}
+      - {id: 133922, type: Cancel, sent: 2026-11-22T14:22:47+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+  - location: "River Plym and Tory Brook"
+    alert_id: 133853
+    alert_sent: 2026-11-21T16:04:10+00:00
+    status: closed
+    latest_id: 134296
+    latest_sent: 2026-11-24T16:01:59+00:00
+    duration: 3d 0h
+    duration_hours: 72
+    issues: []
+    messages:
+      - {id: 133853, type: Alert, sent: 2026-11-21T16:04:10+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 133893, type: Update, sent: 2026-11-22T11:02:04+00:00, elapsed: 0d 19h, elapsed_hours: 19, level: possible}
+      - {id: 134039, type: Update, sent: 2026-11-23T11:04:24+00:00, elapsed: 1d 19h, elapsed_hours: 43, level: possible}
+      - {id: 134252, type: Update, sent: 2026-11-24T10:38:46+00:00, elapsed: 2d 19h, elapsed_hours: 67, level: possible}
+      - {id: 134296, type: Cancel, sent: 2026-11-24T16:01:59+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+  - location: "West Cornwall Rivers"
+    alert_id: 133869
+    alert_sent: 2026-11-22T09:33:07+00:00
+    status: closed
+    latest_id: 134375
+    latest_sent: 2026-11-25T11:04:27+00:00
+    duration: 3d 2h
+    duration_hours: 74
+    issues: []
+    messages:
+      - {id: 133869, type: Alert, sent: 2026-11-22T09:33:07+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134025, type: Update, sent: 2026-11-23T11:04:41+00:00, elapsed: 1d 2h, elapsed_hours: 26, level: possible}
+      - {id: 134163, type: Update, sent: 2026-11-23T16:34:29+00:00, elapsed: 1d 7h, elapsed_hours: 31, level: possible}
+      - {id: 134198, type: Update, sent: 2026-11-24T10:28:44+00:00, elapsed: 2d 1h, elapsed_hours: 49, level: possible}
+      - {id: 134375, type: Cancel, sent: 2026-11-25T11:04:27+00:00, elapsed: 3d 2h, elapsed_hours: 74, level: possible}
+  - location: "River Ottery at Yeolmbridge and Ham Mill"
+    alert_id: 134004
+    alert_sent: 2026-11-22T23:49:34+00:00
+    status: closed
+    latest_id: 134018
+    latest_sent: 2026-11-23T09:53:04+00:00
+    duration: 0d 10h
+    duration_hours: 10
+    issues: [level_change]
+    messages:
+      - {id: 134004, type: Alert, sent: 2026-11-22T23:49:34+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: expected}
+      - {id: 134018, type: Cancel, sent: 2026-11-23T09:53:04+00:00, elapsed: 0d 10h, elapsed_hours: 10, level: possible}
+  - location: "North Cornwall Rivers"
+    alert_id: 134158
+    alert_sent: 2026-11-23T16:35:03+00:00
+    status: closed
+    latest_id: 134288
+    latest_sent: 2026-11-24T16:02:26+00:00
+    duration: 0d 23h
+    duration_hours: 23
+    issues: []
+    messages:
+      - {id: 134158, type: Alert, sent: 2026-11-23T16:35:03+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134206, type: Update, sent: 2026-11-24T10:23:40+00:00, elapsed: 0d 18h, elapsed_hours: 18, level: possible}
+      - {id: 134288, type: Cancel, sent: 2026-11-24T16:02:26+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+  - location: "River Cober"
+    alert_id: 134161
+    alert_sent: 2026-11-23T16:34:47+00:00
+    status: closed
+    latest_id: 134372
+    latest_sent: 2026-11-25T11:04:06+00:00
+    duration: 1d 18h
+    duration_hours: 42
+    issues: []
+    messages:
+      - {id: 134161, type: Alert, sent: 2026-11-23T16:34:47+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134202, type: Update, sent: 2026-11-24T10:22:50+00:00, elapsed: 0d 18h, elapsed_hours: 18, level: possible}
+      - {id: 134372, type: Cancel, sent: 2026-11-25T11:04:06+00:00, elapsed: 1d 18h, elapsed_hours: 42, level: possible}
+  - location: "River Fowey"
+    alert_id: 134195
+    alert_sent: 2026-11-24T10:25:47+00:00
+    status: closed
+    latest_id: 134292
+    latest_sent: 2026-11-24T16:02:12+00:00
+    duration: 0d 6h
+    duration_hours: 6
+    issues: []
+    messages:
+      - {id: 134195, type: Alert, sent: 2026-11-24T10:25:47+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134292, type: Cancel, sent: 2026-11-24T16:02:12+00:00, elapsed: 0d 6h, elapsed_hours: 6, level: possible}
+  - location: "North Sea coast at Bridlington"
+    alert_id: 134208
+    alert_sent: 2026-11-24T10:24:19+00:00
+    status: open
+    latest_id: 134482
+    latest_sent: 2026-11-27T08:35:52+00:00
+    duration: 2d 22h
+    duration_hours: 70
+    issues: [no_cancel]
+    messages:
+      - {id: 134208, type: Alert, sent: 2026-11-24T10:24:19+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134330, type: Update, sent: 2026-11-24T20:42:35+00:00, elapsed: 0d 10h, elapsed_hours: 10, level: possible}
+      - {id: 134342, type: Update, sent: 2026-11-25T08:43:20+00:00, elapsed: 0d 22h, elapsed_hours: 22, level: possible}
+      - {id: 134413, type: Update, sent: 2026-11-25T20:39:33+00:00, elapsed: 1d 10h, elapsed_hours: 34, level: possible}
+      - {id: 134433, type: Update, sent: 2026-11-26T08:42:50+00:00, elapsed: 1d 22h, elapsed_hours: 46, level: possible}
+      - {id: 134452, type: Update, sent: 2026-11-26T16:27:41+00:00, elapsed: 2d 6h, elapsed_hours: 54, level: possible}
+      - {id: 134470, type: Update, sent: 2026-11-26T20:43:12+00:00, elapsed: 2d 10h, elapsed_hours: 58, level: possible}
+      - {id: 134482, type: Update, sent: 2026-11-27T08:35:52+00:00, elapsed: 2d 22h, elapsed_hours: 70, level: possible}
+  - location: "Hunstanton coast in Norfolk"
+    alert_id: 134262
+    alert_sent: 2026-11-24T11:08:00+00:00
+    status: open
+    latest_id: 134492
+    latest_sent: 2026-11-27T10:52:45+00:00
+    duration: 3d 0h
+    duration_hours: 72
+    issues: [update_after_cancel, no_cancel]
+    messages:
+      - {id: 134262, type: Alert, sent: 2026-11-24T11:08:00+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134353, type: Update, sent: 2026-11-25T09:51:37+00:00, elapsed: 0d 23h, elapsed_hours: 23, level: possible}
+      - {id: 134421, type: Cancel, sent: 2026-11-25T21:06:25+00:00, elapsed: 1d 10h, elapsed_hours: 34, level: possible}
+      - {id: 134437, type: Update, sent: 2026-11-26T13:27:12+00:00, elapsed: 2d 2h, elapsed_hours: 50, level: possible}
+      - {id: 134492, type: Update, sent: 2026-11-27T10:52:45+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+  - location: "River Hayle from Relubbus to St Erth"
+    alert_id: 134324
+    alert_sent: 2026-11-24T17:22:39+00:00
+    status: closed
+    latest_id: 134352
+    latest_sent: 2026-11-25T09:47:56+00:00
+    duration: 0d 16h
+    duration_hours: 16
+    issues: [level_change]
+    messages:
+      - {id: 134324, type: Alert, sent: 2026-11-24T17:22:39+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: expected}
+      - {id: 134352, type: Cancel, sent: 2026-11-25T09:47:56+00:00, elapsed: 0d 16h, elapsed_hours: 16, level: possible}
+  - location: "North Sea coast at Withernsea, Easington and Kilnsea"
+    alert_id: 134407
+    alert_sent: 2026-11-25T15:51:42+00:00
+    status: closed
+    latest_id: 134427
+    latest_sent: 2026-11-26T08:36:37+00:00
+    duration: 0d 17h
+    duration_hours: 17
+    issues: []
+    messages:
+      - {id: 134407, type: Alert, sent: 2026-11-25T15:51:42+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134415, type: Update, sent: 2026-11-25T20:39:41+00:00, elapsed: 0d 5h, elapsed_hours: 5, level: possible}
+      - {id: 134427, type: Cancel, sent: 2026-11-26T08:36:37+00:00, elapsed: 0d 17h, elapsed_hours: 17, level: possible}
+  - location: "South Cornwall coast from Lizard Point to Gribbin Head excluding the Tidal Fal Estuary"
+    alert_id: 134443
+    alert_sent: 2026-11-26T16:25:32+00:00
+    status: closed
+    latest_id: 134493
+    latest_sent: 2026-11-27T11:06:34+00:00
+    duration: 0d 19h
+    duration_hours: 19
+    issues: []
+    messages:
+      - {id: 134443, type: Alert, sent: 2026-11-26T16:25:32+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134493, type: Cancel, sent: 2026-11-27T11:06:34+00:00, elapsed: 0d 19h, elapsed_hours: 19, level: possible}
+  - location: "Tidal Fal Estuary"
+    alert_id: 134447
+    alert_sent: 2026-11-26T16:25:27+00:00
+    status: open
+    latest_id: 134510
+    latest_sent: 2026-11-27T11:25:42+00:00
+    duration: 0d 19h
+    duration_hours: 19
+    issues: [no_cancel]
+    messages:
+      - {id: 134447, type: Alert, sent: 2026-11-26T16:25:27+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134510, type: Update, sent: 2026-11-27T11:25:42+00:00, elapsed: 0d 19h, elapsed_hours: 19, level: possible}
+  - location: "South Cornwall coast from Gribbin Head to Rame Head"
+    alert_id: 134450
+    alert_sent: 2026-11-26T16:25:57+00:00
+    status: closed
+    latest_id: 134500
+    latest_sent: 2026-11-27T11:06:59+00:00
+    duration: 0d 19h
+    duration_hours: 19
+    issues: []
+    messages:
+      - {id: 134450, type: Alert, sent: 2026-11-26T16:25:57+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134500, type: Cancel, sent: 2026-11-27T11:06:59+00:00, elapsed: 0d 19h, elapsed_hours: 19, level: possible}
+  - location: "West Cornwall Rivers"
+    alert_id: 134486
+    alert_sent: 2026-11-27T09:11:17+00:00
+    status: open
+    latest_id: 134486
+    latest_sent: 2026-11-27T09:11:17+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134486, type: Alert, sent: 2026-11-27T09:11:17+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}

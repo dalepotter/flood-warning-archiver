@@ -53,6 +53,83 @@ warnings/
 The filename is the message number from the EA URL. To see how a warning evolved, read the `references`
 element in each message: updates and cancellations point back at the messages they supersede.
 
+## Alert chains (`alert-chains.yml`)
+
+`alert-chains.yml` groups the messages in `alerts.csv` into chains: one per `Alert` message, followed by
+every `Update` and `Cancel` that supersedes it. It is derived entirely from `alerts.csv` and is
+currently a snapshot. It is not yet updated by the poll workflow.
+
+A message belongs to the chain named by the **first** ID in its `references`. A message with no
+references starts its own chain. Chains are ordered by the ID of their first message, and messages
+within a chain are ordered by ID, matching the row order of `alerts.csv`.
+
+```yaml
+source: alerts.csv
+message_count: 262
+chain_count: 65
+chains:
+  - location: "North Sea coast at Bridlington"
+    alert_id: 132874
+    alert_sent: 2026-11-16T16:00:53+00:00
+    status: closed
+    latest_id: 133295
+    latest_sent: 2026-11-18T09:17:24+00:00
+    duration: 1d 17h
+    duration_hours: 41
+    issues: []
+    messages:
+      - {id: 132874, type: Alert, sent: 2026-11-16T16:00:53+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 132888, type: Update, sent: 2026-11-16T20:59:44+00:00, elapsed: 0d 5h, elapsed_hours: 5, level: possible}
+      - {id: 132952, type: Update, sent: 2026-11-17T08:43:06+00:00, elapsed: 0d 17h, elapsed_hours: 17, level: possible}
+      - {id: 133190, type: Update, sent: 2026-11-17T20:56:49+00:00, elapsed: 1d 5h, elapsed_hours: 29, level: possible}
+      - {id: 133295, type: Cancel, sent: 2026-11-18T09:17:24+00:00, elapsed: 1d 17h, elapsed_hours: 41, level: possible}
+```
+
+Top-level fields:
+
+| Field | Description |
+| --- | --- |
+| `source` | The CSV the chains were built from. |
+| `message_count` | Number of messages (CSV rows) included. Equals the total of all `messages` lists. |
+| `chain_count` | Number of chains. |
+| `chains` | List of chains, described below. |
+
+Chain fields:
+
+| Field | Description |
+| --- | --- |
+| `location` | The area from the `headline`: the text after the first `: `, for example `Flooding is possible: Tidal Fal Estuary` gives `Tidal Fal Estuary`. Several chains can share a location. |
+| `alert_id` | Message ID of the chain's first message, normally the `Alert`. |
+| `alert_sent` | `sent` time of that message. |
+| `status` | `closed` if the chain's latest message is a `Cancel`, otherwise `open`. This reflects the archive only, not what EA currently has in force. |
+| `latest_id`, `latest_sent` | ID and `sent` time of the chain's latest message. |
+| `duration` | Time from `alert_sent` to `latest_sent`, as `<days>d <hours>h`, rounded to the nearest hour. |
+| `duration_hours` | The same, as a whole number of hours. |
+| `issues` | Reconciliation tags, described below. `[]` when nothing was found. |
+| `messages` | Every message in the chain, one flow mapping per line. |
+
+Message fields:
+
+| Field | Description |
+| --- | --- |
+| `id` | Message ID. |
+| `type` | CAP `msgType`: `Alert`, `Update` or `Cancel`. |
+| `sent` | CAP `sent` time. Timestamps are unquoted ISO 8601, so YAML parsers load them as datetimes. |
+| `elapsed`, `elapsed_hours` | Time since `alert_sent`, formatted and rounded as for `duration`. |
+| `level` | From the `headline` prefix: `possible` for "Flooding is possible" (flood alert) and `expected` for "Flooding is expected" (flood warning). |
+
+Issue tags:
+
+| Tag | Meaning |
+| --- | --- |
+| `no_cancel` | The latest message is not a `Cancel`, so the chain is `open`. |
+| `update_after_cancel` | An `Update` follows a `Cancel` in the same chain: EA reopened the chain rather than issuing a new `Alert`. |
+| `duplicate_cancel` | Two consecutive `Cancel` messages. |
+| `level_change` | `level` differs between messages in the chain, for example a flood warning downgraded to an alert. |
+| `location_change` | The `headline` location differs between messages. `location` then shows the alphabetically first one. |
+| `reference_mismatch` | A message's `references` is not exactly the IDs of the earlier messages in its chain, in order. |
+| `root_not_alert` | The chain's first message is not an `Alert`, for example because the `Alert` was never archived. |
+
 ## Running locally
 
 ```bash
