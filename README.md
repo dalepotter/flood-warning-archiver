@@ -23,6 +23,9 @@ this repository.
    is never saved.
 6. Maintain `alerts.csv`, adding a row for each successfully fetched message and replacing its row
    when it changes. The workflow commits the CSV alongside the XML and feed.
+7. Regenerate `alert-chains.yml` from the CSV records (see [Alert chains](#alert-chains-alert-chainsyml)).
+   The whole file is rebuilt on every run, but it is only rewritten (and so only committed) when its
+   content changes.
 
 The CSV contains `message_id`, `sent`, `msgType`, `responseType`, `urgency`, `severity`,
 `certainty`, `onset`, `expires`, `headline`, `awareness_level`, `awareness_type`, `impacts`, and
@@ -56,8 +59,10 @@ element in each message: updates and cancellations point back at the messages th
 ## Alert chains (`alert-chains.yml`)
 
 `alert-chains.yml` groups the messages in `alerts.csv` into chains: one per `Alert` message, followed by
-every `Update` and `Cancel` that supersedes it. It is derived entirely from `alerts.csv` and is
-currently a snapshot. It is not yet updated by the poll workflow.
+every `Update` and `Cancel` that supersedes it. It is derived entirely from `alerts.csv` and rebuilt
+in full by every poll and every `--backfill-csv`, so it never needs editing by hand. The output is
+deterministic: the same records always produce the same bytes. The first line is a comment, which
+YAML parsers ignore.
 
 A message belongs to the chain named by the **first** ID in its `references`. A message with no
 references starts its own chain. Chains are ordered by the ID of their first message, and messages
@@ -100,10 +105,10 @@ Chain fields:
 | --- | --- |
 | `location` | The area from the `headline`: the text after the first `: `, for example `Flooding is possible: Tidal Fal Estuary` gives `Tidal Fal Estuary`. Several chains can share a location. |
 | `alert_id` | Message ID of the chain's first message, normally the `Alert`. |
-| `alert_sent` | `sent` time of that message. |
+| `alert_sent` | `sent` time of that message, or `null` if it is not usable (see `invalid_sent`). |
 | `status` | `closed` if the chain's latest message is a `Cancel`, otherwise `open`. This reflects the archive only, not what EA currently has in force. |
-| `latest_id`, `latest_sent` | ID and `sent` time of the chain's latest message. |
-| `duration` | Time from `alert_sent` to `latest_sent`, as `<days>d <hours>h`, rounded to the nearest hour. |
+| `latest_id`, `latest_sent` | ID and `sent` time (or `null`) of the chain's latest message, which is the one with the highest ID. |
+| `duration` | Time from `alert_sent` to `latest_sent`, as `<days>d <hours>h`, rounded to the nearest hour. `null` if either time is not usable. |
 | `duration_hours` | The same, as a whole number of hours. |
 | `issues` | Reconciliation tags, described below. `[]` when nothing was found. |
 | `messages` | Every message in the chain, one flow mapping per line. |
@@ -114,9 +119,9 @@ Message fields:
 | --- | --- |
 | `id` | Message ID. |
 | `type` | CAP `msgType`: `Alert`, `Update` or `Cancel`. |
-| `sent` | CAP `sent` time. Timestamps are unquoted ISO 8601, so YAML parsers load them as datetimes. |
-| `elapsed`, `elapsed_hours` | Time since `alert_sent`, formatted and rounded as for `duration`. |
-| `level` | From the `headline` prefix: `possible` for "Flooding is possible" (flood alert) and `expected` for "Flooding is expected" (flood warning). |
+| `sent` | CAP `sent` time. Timestamps are unquoted ISO 8601, so YAML parsers load them as datetimes. `null` if the time is missing, cannot be parsed, or has no UTC offset. |
+| `elapsed`, `elapsed_hours` | Time since `alert_sent`, formatted and rounded as for `duration`. `null` if this message's or the chain's first time is not usable. |
+| `level` | From the `headline` prefix: `possible` for "Flooding is possible" (flood alert) and `expected` for "Flooding is expected" (flood warning). Any other headline gives `unknown`, and a headline without `: ` is used whole as the location. |
 
 Issue tags:
 
@@ -129,6 +134,10 @@ Issue tags:
 | `location_change` | The `headline` location differs between messages. `location` then shows the alphabetically first one. |
 | `reference_mismatch` | A message's `references` is not exactly the IDs of the earlier messages in its chain, in order. |
 | `root_not_alert` | The chain's first message is not an `Alert`, for example because the `Alert` was never archived. |
+| `invalid_sent` | At least one message's `sent` is `null`, so some elapsed times or the duration are `null`. |
+
+Tags always appear in this order: `root_not_alert`, `reference_mismatch`, `invalid_sent`,
+`update_after_cancel`, `duplicate_cancel`, `level_change`, `location_change`, `no_cancel`.
 
 ## Running locally
 
@@ -142,11 +151,13 @@ python cap_poller.py --warnings-dir /tmp/w   # archive somewhere else
 python cap_poller.py --feed-file /tmp/f.atom # keep the index copy somewhere else
 python cap_poller.py -v                      # debug logging
 python cap_poller.py --csv-file /tmp/alerts.csv # keep alert records somewhere else
-python cap_poller.py --backfill-csv           # rebuild alerts.csv from all local warnings/*.xml
+python cap_poller.py --chains-file /tmp/c.yml # keep alert chains somewhere else
+python cap_poller.py --backfill-csv           # rebuild alerts.csv and alert-chains.yml from all local warnings/*.xml
 ```
 
 The offline backfill uses the same extractor and CSV writer as polling, makes no HTTP requests,
-and replaces the CSV with records from the archive. Re-running it with unchanged XML is a no-op.
+and replaces the CSV and the alert chains with records from the archive. Re-running it with unchanged
+XML is a no-op.
 Normal polling records successfully fetched messages even if their XML is unchanged, so a missing
 CSV row can be recovered without re-archiving the message. Missing historical messages require a backfill.
 
@@ -165,7 +176,8 @@ Tests never call the live EA service; HTTP is mocked.
 ## Automation
 
 `.github/workflows/poll.yml` runs hourly (at 17 minutes past) and on demand (Actions tab → "Poll CAP
-feed" → "Run workflow"). New and updated messages are committed to `main` by `github-actions[bot]` using
+feed" → "Run workflow"). New and updated messages, the feed index, `alerts.csv` and `alert-chains.yml`
+are committed to `main` by `github-actions[bot]` using
 [git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action), for example
 `data: Archive 2 new CAP message(s) (132562, 132570)`. Each run's summary lists what was archived and
 what failed. If polling fails, messages archived before the failure are still committed and the run is

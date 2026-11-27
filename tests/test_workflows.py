@@ -29,11 +29,13 @@ def test_poll_workflow_never_overlaps_runs():
     assert data["concurrency"]["cancel-in-progress"] is False
 
 
-def test_poll_workflow_only_commits_archived_messages_and_the_feed():
+def test_poll_workflow_only_commits_archived_messages_feed_and_derived_files():
     data, _ = load_workflow()
     steps = data["jobs"]["poll"]["steps"]
     commit = next(s for s in steps if s.get("uses", "").startswith("stefanzweifel/git-auto-commit-action@"))
-    assert commit["with"]["file_pattern"].split() == ["warnings/*.xml", "feed/messages.atom", "alerts.csv"]
+    assert commit["with"]["file_pattern"].split() == [
+        "warnings/*.xml", "feed/messages.atom", "alerts.csv", "alert-chains.yml"
+    ]
 
 
 def test_poll_workflow_checks_out_the_branch_head_not_the_triggering_sha():

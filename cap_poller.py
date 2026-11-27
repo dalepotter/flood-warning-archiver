@@ -4,6 +4,7 @@
 import argparse
 import csv
 import io
+import json
 import logging
 import os
 import re
@@ -11,6 +12,7 @@ import sys
 import tempfile
 import time
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 
 import requests
@@ -22,6 +24,7 @@ FEED_URL = f"{BASE_URL}/messages.atom"
 WARNINGS_DIR = Path("warnings")
 FEED_ARCHIVE_PATH = Path("feed/messages.atom")
 ALERTS_CSV_PATH = Path("alerts.csv")
+ALERT_CHAINS_PATH = Path("alert-chains.yml")
 ALERT_FIELDS = [
     "message_id", "sent", "msgType", "responseType", "urgency", "severity", "certainty",
     "onset", "expires", "headline", "awareness_level", "awareness_type", "impacts", "references",
@@ -288,8 +291,143 @@ def save_alert_records(path: Path, records: dict[str, dict[str, str]]) -> bool:
     return True
 
 
-def backfill_alert_records(warnings_dir: Path, csv_path: Path) -> int:
-    """Rebuild the CSV from local archived messages using the polling extractor."""
+# Strings that YAML reads back unchanged without quotes (file names, msgType values).
+PLAIN_YAML_PATTERN = re.compile(r"[A-Za-z_][A-Za-z0-9_./-]*")
+HEADLINE_LEVELS = {"Flooding is possible": "possible", "Flooding is expected": "expected"}
+
+
+def _headline_parts(headline: str) -> tuple[str, str]:
+    """'Flooding is possible: River Cole' -> ('possible', 'River Cole')."""
+    prefix, separator, location = headline.partition(": ")
+    if not separator:
+        return "unknown", headline
+    return HEADLINE_LEVELS.get(prefix, "unknown"), location
+
+
+def _yaml_string(value: str) -> str:
+    """A YAML scalar that loads back as exactly this string (JSON strings are valid YAML)."""
+    return value if PLAIN_YAML_PATTERN.fullmatch(value) else json.dumps(value, ensure_ascii=False)
+
+
+def _sent_time(value: str) -> datetime | None:
+    """Parse a CAP sent time; None unless it is ISO 8601 with a UTC offset, as CAP requires."""
+    try:
+        when = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    return when if when.tzinfo is not None else None
+
+
+def _reference_ids(record: dict[str, str]) -> list[str]:
+    return [ref for ref in record["references"].split("|") if ref]
+
+
+def _elapsed(start: datetime | None, end: datetime | None) -> tuple[str, str]:
+    """Time from start to end as YAML scalars ('<d>d <h>h', hours), rounded to the nearest hour.
+
+    Both are 'null' if either time is unusable.
+    """
+    if start is None or end is None:
+        return "null", "null"
+    hours = round((end - start).total_seconds() / 3600)
+    return f"{hours // 24}d {hours % 24}h", str(hours)
+
+
+def _chain_issues(
+    chain: list[dict[str, str]], sent: list[datetime | None], levels: list[str], locations: list[str]
+) -> list[str]:
+    """Reconciliation tags for one chain (oldest message first). Order is fixed."""
+    types = [record["msgType"] for record in chain]
+    ids = [record["message_id"] for record in chain]
+    issues = []
+    if types[0] != "Alert":
+        issues.append("root_not_alert")
+    if any(_reference_ids(record) != ids[:n] for n, record in enumerate(chain)):
+        issues.append("reference_mismatch")
+    if None in sent:
+        issues.append("invalid_sent")
+    if "Cancel" in types[:-1] and any(t != "Cancel" for t in types[types.index("Cancel"):]):
+        issues.append("update_after_cancel")
+    if any(a == b == "Cancel" for a, b in zip(types, types[1:])):
+        issues.append("duplicate_cancel")
+    if len(set(levels)) > 1:
+        issues.append("level_change")
+    if len(set(locations)) > 1:
+        issues.append("location_change")
+    if types[-1] != "Cancel":
+        issues.append("no_cancel")
+    return issues
+
+
+def format_alert_chains(records: dict[str, dict[str, str]], source: str = "alerts.csv") -> str:
+    """Group alert records into chains and render them as deterministic YAML.
+
+    A message belongs to the chain named by the first ID in its references (or its own ID if it
+    has none). Chains and their messages are ordered by numeric message ID, like alerts.csv.
+    Written by hand rather than with a YAML library so the runtime needs no extra dependency
+    and each message stays on one line.
+    """
+    chains: dict[str, list[dict[str, str]]] = {}
+    for record in records.values():
+        references = _reference_ids(record)
+        chains.setdefault(references[0] if references else record["message_id"], []).append(record)
+
+    lines = [
+        f"# Generated from {source}; chains and messages in alerts.csv order (ascending message ID).",
+        f"source: {_yaml_string(source)}",
+        f"message_count: {len(records)}",
+        f"chain_count: {len(chains)}",
+        "chains:" if chains else "chains: []",
+    ]
+    by_id = lambda record: int(record["message_id"])  # noqa: E731
+    for chain in sorted(chains.values(), key=lambda chain: min(map(by_id, chain))):
+        chain.sort(key=by_id)
+        sent = [_sent_time(record["sent"]) for record in chain]
+        sent_text = [record["sent"] if when else "null" for record, when in zip(chain, sent)]
+        levels, locations = zip(*(_headline_parts(record["headline"]) for record in chain))
+        first, last = chain[0], chain[-1]
+        duration, duration_hours = _elapsed(sent[0], sent[-1])
+        lines += [
+            f"  - location: {json.dumps(sorted(locations)[0], ensure_ascii=False)}",
+            f"    alert_id: {first['message_id']}",
+            f"    alert_sent: {sent_text[0]}",
+            f"    status: {'closed' if last['msgType'] == 'Cancel' else 'open'}",
+            f"    latest_id: {last['message_id']}",
+            f"    latest_sent: {sent_text[-1]}",
+            f"    duration: {duration}",
+            f"    duration_hours: {duration_hours}",
+            f"    issues: [{', '.join(_chain_issues(chain, sent, levels, locations))}]",
+            "    messages:",
+        ]
+        for record, when, text, level in zip(chain, sent, sent_text, levels):
+            elapsed, elapsed_hours = _elapsed(sent[0], when)
+            lines.append(
+                f"      - {{id: {record['message_id']}, type: {_yaml_string(record['msgType'])}, sent: {text}, "
+                f"elapsed: {elapsed}, elapsed_hours: {elapsed_hours}, level: {level}}}"
+            )
+    return "\n".join(lines) + "\n"
+
+
+def save_alert_chains(path: Path, records: dict[str, dict[str, str]], source: str = "alerts.csv") -> bool:
+    """Regenerate the alert chains file atomically, only when its bytes change."""
+    content = format_alert_chains(records, source).encode("utf-8")
+    path = Path(path)
+    if path.exists() and path.read_bytes() == content:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as tmp:
+            tmp.write(content)
+        os.replace(tmp_name, path)
+    except BaseException:
+        Path(tmp_name).unlink(missing_ok=True)
+        raise
+    return True
+
+
+def backfill_alert_records(warnings_dir: Path, csv_path: Path, chains_path: Path = ALERT_CHAINS_PATH) -> int:
+    """Rebuild the CSV and alert chains from local archived messages using the polling extractor."""
     if not warnings_dir.is_dir():
         raise ValueError(f"Archive directory does not exist: {warnings_dir}")
     records = {}
@@ -299,6 +437,7 @@ def backfill_alert_records(warnings_dir: Path, csv_path: Path) -> int:
             continue
         records[path.stem] = alert_record(path.stem, path.read_bytes())
     save_alert_records(csv_path, records)
+    save_alert_chains(chains_path, records, Path(csv_path).name)
     return len(records)
 
 
@@ -315,6 +454,7 @@ class PollResult:
     unavailable_references: dict[str, str] = field(default_factory=dict)  # not a failure
     feed_changed: bool = False
     csv_changed: bool = False
+    chains_changed: bool = False
 
 
 def referenced_message_ids(content: bytes) -> list[str]:
@@ -341,6 +481,7 @@ def poll_once(
     session: requests.Session | None = None,
     feed_path: Path = FEED_ARCHIVE_PATH,
     csv_path: Path = ALERTS_CSV_PATH,
+    chains_path: Path = ALERT_CHAINS_PATH,
 ) -> PollResult:
     """Fetch the index, archive it if changed, then reconcile every listed message.
 
@@ -391,6 +532,7 @@ def poll_once(
         if record is not None:
             records[message_id] = record
     result.csv_changed = save_alert_records(csv_path, records)
+    result.chains_changed = save_alert_chains(chains_path, records, Path(csv_path).name)
     return result
 
 
@@ -405,6 +547,7 @@ def format_summary(result: PollResult) -> str:
         f"- Referenced but unavailable: {len(result.unavailable_references)}",
         f"- Feed updated: {'yes' if result.feed_changed else 'no'}",
         f"- Alerts CSV updated: {'yes' if result.csv_changed else 'no'}",
+        f"- Alert chains updated: {'yes' if result.chains_changed else 'no'}",
     ]
     if result.new_ids:
         lines += ["", "### New", *[f"- {message_id}" for message_id in result.new_ids]]
@@ -442,6 +585,8 @@ def format_commit_message(result: PollResult) -> str:
         title = "data: Update CAP feed index"
     elif result.csv_changed:
         title = "data: Update CAP alert records"
+    elif result.chains_changed:
+        title = "data: Update alert chains"
     else:
         title = "data: Poll CAP feed"
 
@@ -484,7 +629,13 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("-v", "--verbose", action="store_true", help="debug logging")
     parser.add_argument("--csv-file", type=Path, default=ALERTS_CSV_PATH, help="alert records CSV (default: alerts.csv)")
-    parser.add_argument("--backfill-csv", action="store_true", help="rebuild CSV from archived XML without fetching the feed")
+    parser.add_argument(
+        "--chains-file", type=Path, default=ALERT_CHAINS_PATH, help="alert chains YAML (default: alert-chains.yml)"
+    )
+    parser.add_argument(
+        "--backfill-csv", action="store_true",
+        help="rebuild CSV and alert chains from archived XML without fetching the feed",
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(
@@ -494,15 +645,17 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.backfill_csv:
         try:
-            count = backfill_alert_records(args.warnings_dir, args.csv_file)
+            count = backfill_alert_records(args.warnings_dir, args.csv_file, args.chains_file)
         except (OSError, ValueError, InvalidMessageError, csv.Error) as exc:
             logger.error("Could not backfill alerts CSV: %s", exc)
             return 1
-        logger.info("Recorded %d archived message(s) in %s", count, args.csv_file)
+        logger.info("Recorded %d archived message(s) in %s and %s", count, args.csv_file, args.chains_file)
         return 0
 
     try:
-        result = poll_once(args.warnings_dir, feed_path=args.feed_file, csv_path=args.csv_file)
+        result = poll_once(
+            args.warnings_dir, feed_path=args.feed_file, csv_path=args.csv_file, chains_path=args.chains_file
+        )
     except (FetchError, FeedParseError) as exc:
         logger.error("Could not read the CAP feed: %s", exc)
         return 1
