@@ -175,7 +175,7 @@ Tests never call the live EA service; HTTP is mocked.
 
 ## Automation
 
-`.github/workflows/poll.yml` runs hourly (at 17 minutes past) and on demand (Actions tab → "Poll CAP
+`.github/workflows/poll.yml` runs hourly (at 10 minutes past) and on demand (Actions tab → "Poll CAP
 feed" → "Run workflow"). New and updated messages, the feed index, `alerts.csv` and `alert-chains.yml`
 are committed to `main` by `github-actions[bot]` using
 [git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action), for example
