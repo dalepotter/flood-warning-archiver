@@ -633,7 +633,7 @@ def main(argv: list[str] | None = None) -> int:
         "--chains-file", type=Path, default=ALERT_CHAINS_PATH, help="alert chains YAML (default: alert-chains.yml)"
     )
     parser.add_argument(
-        "--backfill-csv", action="store_true",
+        "--backfill-summary-data", action="store_true",
         help="rebuild CSV and alert chains from archived XML without fetching the feed",
     )
     args = parser.parse_args(argv)
@@ -643,11 +643,11 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)s %(message)s",
     )
 
-    if args.backfill_csv:
+    if args.backfill_summary_data:
         try:
             count = backfill_alert_records(args.warnings_dir, args.csv_file, args.chains_file)
         except (OSError, ValueError, InvalidMessageError, csv.Error) as exc:
-            logger.error("Could not backfill alerts CSV: %s", exc)
+            logger.error("Could not backfill summary data: %s", exc)
             return 1
         logger.info("Recorded %d archived message(s) in %s and %s", count, args.csv_file, args.chains_file)
         return 0

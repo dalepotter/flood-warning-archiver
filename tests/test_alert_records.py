@@ -196,7 +196,7 @@ def test_backfill_uses_local_files_and_is_idempotent(alert_xml, cancel_xml, warn
     save_message(warnings_dir, "132514", cancel_xml)
     (warnings_dir / ".gitkeep").touch()
     path = tmp_path / "alerts.csv"
-    assert main(["--backfill-csv", "--warnings-dir", str(warnings_dir), "--csv-file", str(path)]) == 0
+    assert main(["--backfill-summary-data", "--warnings-dir", str(warnings_dir), "--csv-file", str(path)]) == 0
     assert read_alert_records(path) == {
         "132508": alert_record("132508", alert_xml),
         "132514": alert_record("132514", cancel_xml),
@@ -213,5 +213,5 @@ def test_invalid_archive_does_not_replace_csv(alert_xml, warnings_dir, tmp_path)
     path = tmp_path / "alerts.csv"
     save_alert_records(path, {})
     original = path.read_bytes()
-    assert main(["--backfill-csv", "--warnings-dir", str(warnings_dir), "--csv-file", str(path)]) == 1
+    assert main(["--backfill-summary-data", "--warnings-dir", str(warnings_dir), "--csv-file", str(path)]) == 1
     assert path.read_bytes() == original

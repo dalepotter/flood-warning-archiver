@@ -293,7 +293,7 @@ def test_cli_chains_file_option_is_used_for_poll_and_backfill(make_feed, alert_x
     responses.add(responses.GET, FEED_URL, body=make_feed(["132508"]))
     responses.add(responses.GET, message_url("132508"), body=alert_xml)
     assert main(["--warnings-dir", str(warnings_dir), "--chains-file", str(polled)]) == 0
-    assert main(["--backfill-csv", "--warnings-dir", str(warnings_dir), "--chains-file", str(backfilled)]) == 0
+    assert main(["--backfill-summary-data", "--warnings-dir", str(warnings_dir), "--chains-file", str(backfilled)]) == 0
     assert polled.read_bytes() == backfilled.read_bytes()
     assert yaml.safe_load(polled.read_text())["chains"][0]["alert_id"] == 132508
 

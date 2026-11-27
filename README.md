@@ -60,7 +60,7 @@ element in each message: updates and cancellations point back at the messages th
 
 `alert-chains.yml` groups the messages in `alerts.csv` into chains: one per `Alert` message, followed by
 every `Update` and `Cancel` that supersedes it. It is derived entirely from `alerts.csv` and rebuilt
-in full by every poll and every `--backfill-csv`, so it never needs editing by hand. The output is
+in full by every poll and every `--backfill-summary-data`, so it never needs editing by hand. The output is
 deterministic: the same records always produce the same bytes. The first line is a comment, which
 YAML parsers ignore.
 
@@ -152,7 +152,7 @@ python cap_poller.py --feed-file /tmp/f.atom # keep the index copy somewhere els
 python cap_poller.py -v                      # debug logging
 python cap_poller.py --csv-file /tmp/alerts.csv # keep alert records somewhere else
 python cap_poller.py --chains-file /tmp/c.yml # keep alert chains somewhere else
-python cap_poller.py --backfill-csv           # rebuild alerts.csv and alert-chains.yml from all local warnings/*.xml
+python cap_poller.py --backfill-summary-data  # rebuild alerts.csv and alert-chains.yml from all local warnings/*.xml
 ```
 
 The offline backfill uses the same extractor and CSV writer as polling, makes no HTTP requests,
