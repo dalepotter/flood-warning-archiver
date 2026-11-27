@@ -1,7 +1,7 @@
 # Generated from alerts.csv; chains and messages in alerts.csv order (ascending message ID).
 source: alerts.csv
-message_count: 262
-chain_count: 65
+message_count: 264
+chain_count: 66
 chains:
   - location: "The tidal Rivers Bure, Ant and Thurne"
     alert_id: 132629
@@ -832,10 +832,10 @@ chains:
     alert_id: 134262
     alert_sent: 2026-11-24T11:08:00+00:00
     status: open
-    latest_id: 134492
-    latest_sent: 2026-11-27T10:52:45+00:00
-    duration: 3d 0h
-    duration_hours: 72
+    latest_id: 134520
+    latest_sent: 2026-11-27T16:46:56+00:00
+    duration: 3d 6h
+    duration_hours: 78
     issues: [update_after_cancel, no_cancel]
     messages:
       - {id: 134262, type: Alert, sent: 2026-11-24T11:08:00+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
@@ -843,6 +843,7 @@ chains:
       - {id: 134421, type: Cancel, sent: 2026-11-25T21:06:25+00:00, elapsed: 1d 10h, elapsed_hours: 34, level: possible}
       - {id: 134437, type: Update, sent: 2026-11-26T13:27:12+00:00, elapsed: 2d 2h, elapsed_hours: 50, level: possible}
       - {id: 134492, type: Update, sent: 2026-11-27T10:52:45+00:00, elapsed: 3d 0h, elapsed_hours: 72, level: possible}
+      - {id: 134520, type: Update, sent: 2026-11-27T16:46:56+00:00, elapsed: 3d 6h, elapsed_hours: 78, level: possible}
   - location: "River Hayle from Relubbus to St Erth"
     alert_id: 134324
     alert_sent: 2026-11-24T17:22:39+00:00
@@ -915,3 +916,14 @@ chains:
     issues: [no_cancel]
     messages:
       - {id: 134486, type: Alert, sent: 2026-11-27T09:11:17+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "South Devon coast from Start Point to Dawlish Warren"
+    alert_id: 134514
+    alert_sent: 2026-11-27T16:20:37+00:00
+    status: open
+    latest_id: 134514
+    latest_sent: 2026-11-27T16:20:37+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134514, type: Alert, sent: 2026-11-27T16:20:37+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
