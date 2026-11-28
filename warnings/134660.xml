@@ -1,0 +1,76 @@
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>2.49.0.1.826.1.20261128182329.134660</identifier>
+  <sender>www.gov.uk/environment-agency</sender>
+  <sent>2026-11-28T18:23:29+00:00</sent>
+  <status>Actual</status>
+  <msgType>Alert</msgType>
+  <source>Flood warning service</source>
+  <scope>Public</scope>
+  <code>MCP:v2.0</code>
+  <info>
+    <language>en-GB</language>
+    <category>Met</category>
+    <event>Flood Warning: North Sea coast at Bridlington - Harbour Road and Floral Pavilion</event>
+    <responseType>Monitor</responseType>
+    <urgency>Immediate</urgency>
+    <severity>Severe</severity>
+    <certainty>Likely</certainty>
+    <onset>2026-11-28T18:23:29+00:00</onset>
+    <expires>2026-11-30T18:23:29+00:00</expires>
+    <senderName>Environment Agency</senderName>
+    <headline>Flooding is expected: North Sea coast at Bridlington - Harbour Road and Floral Pavilion</headline>
+    <description><![CDATA[High tides and forecast weather conditions are expected to cause flooding this evening. 
+
+Flooding is expected from 18:15 to 21:45 on 28/11/2026. 
+
+High astronomical tides and a large surge is expected.
+Locations most affected will be coastal roads, promenades and footpaths.. 
+
+We are closely monitoring the situation . 
+
+Avoid coastal roads, footpaths and carparks, which may be flooded. Stay away from promenades where overtopping is possible. 
+
+This message will be updated by 2:00AM on Sunday 29 November or as the situation changes.]]></description>
+    <instruction><![CDATA[Act now 
+ 
+You should: 
+- go to Check for flooding for a map of the area and to monitor up-to-date local flood information – https://check-for-flooding.service.gov.uk/target-area/122FWC001  
+- act on your personal flood plan if you have one - https://www.gov.uk/government/publications/personal-flood-plan 
+- follow the guidance in 'What to do before or during a flood' - https://www.gov.uk/help-during-flood  
+ 
+You can also read more about what flood warnings are – https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#flood-warning 
+ 
+Stay up to date 
+ 
+To get the latest flood information, you can: 
+- go to Check for flooding 
+- monitor local weather, news and travel updates 
+- call Floodline on 0345 988 1188, using quickdial code 130501]]></instruction>
+    <web>https://check-for-flooding.service.gov.uk</web>
+    <contact>0345 988 1188</contact>
+    <parameter>
+      <valueName>awareness_level</valueName>
+      <value>3; orange; Severe</value>
+    </parameter>
+    <parameter>
+      <valueName>awareness_type</valueName>
+      <value>12; Flooding</value>
+    </parameter>
+    <parameter>
+      <valueName>impacts</valueName>
+      <value>Flooding is expected - act now</value>
+    </parameter>
+    <parameter>
+      <valueName>use_polygon_over_geocode</valueName>
+      <value>true</value>
+    </parameter>
+    <parameter>
+      <valueName>uk_ea_ta_code</valueName>
+      <value>122FWC001</value>
+    </parameter>
+    <area>
+      <areaDesc><![CDATA[North Sea coast at Bridlington - Harbour Road and Floral Pavilion]]></areaDesc>
+      <polygon>54.08162,-0.18764 54.08334,-0.18642 54.08396,-0.18576 54.08383,-0.18537 54.08333,-0.18564 54.08099,-0.18739 54.0806,-0.18785 54.08118,-0.18992 54.08159,-0.18969 54.08125,-0.18791 54.08162,-0.18764</polygon>
+    </area>
+  </info>
+</alert>

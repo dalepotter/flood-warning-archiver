@@ -1,7 +1,7 @@
 # Generated from alerts.csv; chains and messages in alerts.csv order (ascending message ID).
 source: alerts.csv
-message_count: 277
-chain_count: 73
+message_count: 287
+chain_count: 79
 chains:
   - location: "The tidal Rivers Bure, Ant and Thurne"
     alert_id: 132629
@@ -912,15 +912,16 @@ chains:
   - location: "West Cornwall Rivers"
     alert_id: 134486
     alert_sent: 2026-11-27T09:11:17+00:00
-    status: open
-    latest_id: 134548
-    latest_sent: 2026-11-28T10:51:26+00:00
-    duration: 1d 2h
-    duration_hours: 26
-    issues: [no_cancel]
+    status: closed
+    latest_id: 134630
+    latest_sent: 2026-11-28T16:34:08+00:00
+    duration: 1d 7h
+    duration_hours: 31
+    issues: []
     messages:
       - {id: 134486, type: Alert, sent: 2026-11-27T09:11:17+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
       - {id: 134548, type: Update, sent: 2026-11-28T10:51:26+00:00, elapsed: 1d 2h, elapsed_hours: 26, level: possible}
+      - {id: 134630, type: Cancel, sent: 2026-11-28T16:34:08+00:00, elapsed: 1d 7h, elapsed_hours: 31, level: possible}
   - location: "South Devon coast from Start Point to Dawlish Warren"
     alert_id: 134514
     alert_sent: 2026-11-27T16:20:37+00:00
@@ -936,14 +937,15 @@ chains:
   - location: "Tributaries in Leicester City"
     alert_id: 134559
     alert_sent: 2026-11-28T12:02:07+00:00
-    status: open
-    latest_id: 134559
-    latest_sent: 2026-11-28T12:02:07+00:00
-    duration: 0d 0h
-    duration_hours: 0
-    issues: [no_cancel]
+    status: closed
+    latest_id: 134648
+    latest_sent: 2026-11-28T16:58:25+00:00
+    duration: 0d 5h
+    duration_hours: 5
+    issues: []
     messages:
       - {id: 134559, type: Alert, sent: 2026-11-28T12:02:07+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134648, type: Cancel, sent: 2026-11-28T16:58:25+00:00, elapsed: 0d 5h, elapsed_hours: 5, level: possible}
   - location: "River Axe area"
     alert_id: 134571
     alert_sent: 2026-11-28T12:58:07+00:00
@@ -959,13 +961,14 @@ chains:
     alert_id: 134578
     alert_sent: 2026-11-28T13:17:38+00:00
     status: open
-    latest_id: 134578
-    latest_sent: 2026-11-28T13:17:38+00:00
-    duration: 0d 0h
-    duration_hours: 0
+    latest_id: 134636
+    latest_sent: 2026-11-28T16:52:03+00:00
+    duration: 0d 4h
+    duration_hours: 4
     issues: [no_cancel]
     messages:
       - {id: 134578, type: Alert, sent: 2026-11-28T13:17:38+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134636, type: Update, sent: 2026-11-28T16:52:03+00:00, elapsed: 0d 4h, elapsed_hours: 4, level: possible}
   - location: "Rivers Duddon, Crake and Mill Beck"
     alert_id: 134588
     alert_sent: 2026-11-28T14:10:37+00:00
@@ -992,13 +995,14 @@ chains:
     alert_id: 134596
     alert_sent: 2026-11-28T15:21:07+00:00
     status: open
-    latest_id: 134596
-    latest_sent: 2026-11-28T15:21:07+00:00
-    duration: 0d 0h
-    duration_hours: 0
+    latest_id: 134612
+    latest_sent: 2026-11-28T15:53:57+00:00
+    duration: 0d 1h
+    duration_hours: 1
     issues: [no_cancel]
     messages:
       - {id: 134596, type: Alert, sent: 2026-11-28T15:21:07+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+      - {id: 134612, type: Update, sent: 2026-11-28T15:53:57+00:00, elapsed: 0d 1h, elapsed_hours: 1, level: possible}
   - location: "Rivers Otter and Sid, and Exmouth area"
     alert_id: 134601
     alert_sent: 2026-11-28T15:13:34+00:00
@@ -1010,3 +1014,69 @@ chains:
     issues: [no_cancel]
     messages:
       - {id: 134601, type: Alert, sent: 2026-11-28T15:13:34+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "Rivers Brathay, Rothay and Winster"
+    alert_id: 134618
+    alert_sent: 2026-11-28T16:12:26+00:00
+    status: open
+    latest_id: 134618
+    latest_sent: 2026-11-28T16:12:26+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134618, type: Alert, sent: 2026-11-28T16:12:26+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "River Churnet and River Tean"
+    alert_id: 134624
+    alert_sent: 2026-11-28T16:17:25+00:00
+    status: open
+    latest_id: 134624
+    latest_sent: 2026-11-28T16:17:25+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134624, type: Alert, sent: 2026-11-28T16:17:25+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "Rivers Kent and Bela"
+    alert_id: 134637
+    alert_sent: 2026-11-28T16:51:09+00:00
+    status: open
+    latest_id: 134637
+    latest_sent: 2026-11-28T16:51:09+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134637, type: Alert, sent: 2026-11-28T16:51:09+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "South East Somerset Rivers, Upper Reaches"
+    alert_id: 134640
+    alert_sent: 2026-11-28T17:14:08+00:00
+    status: open
+    latest_id: 134640
+    latest_sent: 2026-11-28T17:14:08+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134640, type: Alert, sent: 2026-11-28T17:14:08+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "River Maun in Nottinghamshire"
+    alert_id: 134659
+    alert_sent: 2026-11-28T18:19:25+00:00
+    status: open
+    latest_id: 134659
+    latest_sent: 2026-11-28T18:19:25+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134659, type: Alert, sent: 2026-11-28T18:19:25+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
+  - location: "North Sea coast at Bridlington - Harbour Road and Floral Pavilion"
+    alert_id: 134660
+    alert_sent: 2026-11-28T18:23:29+00:00
+    status: open
+    latest_id: 134660
+    latest_sent: 2026-11-28T18:23:29+00:00
+    duration: 0d 0h
+    duration_hours: 0
+    issues: [no_cancel]
+    messages:
+      - {id: 134660, type: Alert, sent: 2026-11-28T18:23:29+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: expected}
