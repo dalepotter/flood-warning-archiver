@@ -1,6 +1,6 @@
 # Generated from alerts.csv; chains and messages in alerts.csv order (ascending message ID).
 source: alerts.csv
-message_count: 264
+message_count: 265
 chain_count: 66
 chains:
   - location: "The tidal Rivers Bure, Ant and Thurne"
@@ -814,10 +814,10 @@ chains:
     alert_id: 134208
     alert_sent: 2026-11-24T10:24:19+00:00
     status: open
-    latest_id: 134482
-    latest_sent: 2026-11-27T08:35:52+00:00
-    duration: 2d 22h
-    duration_hours: 70
+    latest_id: 134526
+    latest_sent: 2026-11-27T20:58:37+00:00
+    duration: 3d 11h
+    duration_hours: 83
     issues: [no_cancel]
     messages:
       - {id: 134208, type: Alert, sent: 2026-11-24T10:24:19+00:00, elapsed: 0d 0h, elapsed_hours: 0, level: possible}
@@ -828,6 +828,7 @@ chains:
       - {id: 134452, type: Update, sent: 2026-11-26T16:27:41+00:00, elapsed: 2d 6h, elapsed_hours: 54, level: possible}
       - {id: 134470, type: Update, sent: 2026-11-26T20:43:12+00:00, elapsed: 2d 10h, elapsed_hours: 58, level: possible}
       - {id: 134482, type: Update, sent: 2026-11-27T08:35:52+00:00, elapsed: 2d 22h, elapsed_hours: 70, level: possible}
+      - {id: 134526, type: Update, sent: 2026-11-27T20:58:37+00:00, elapsed: 3d 11h, elapsed_hours: 83, level: possible}
   - location: "Hunstanton coast in Norfolk"
     alert_id: 134262
     alert_sent: 2026-11-24T11:08:00+00:00

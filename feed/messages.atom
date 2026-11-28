@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cap-xml.prd.defra.cloud/v2/messages.atom</id>
     <title>Flood warnings for England</title>
-    <updated>2026-11-27T16:52:27.785Z</updated>
+    <updated>2026-11-28T01:08:45.764Z</updated>
     <generator>Environment Agency CAP XML flood warnings</generator>
     <author>
         <name>Environment Agency</name>
@@ -12,6 +12,12 @@
     <link rel="alternate" href="https://cap-xml.prd.defra.cloud/v2/messages.atom"/>
     <subtitle>Flood warnings for England</subtitle>
     <rights>Copyright, Environment Agency. Licensed under Creative Commons BY 4.0</rights>
+    <entry>
+        <title type="html"><![CDATA[122WAC954]]></title>
+        <id>https://cap-xml.prd.defra.cloud/v2/message/134526</id>
+        <link href="https://cap-xml.prd.defra.cloud/v2/message/134526"/>
+        <updated>2026-11-27T20:58:37.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[052WATCSTHUN]]></title>
         <id>https://cap-xml.prd.defra.cloud/v2/message/134520</id>
@@ -47,11 +53,5 @@
         <id>https://cap-xml.prd.defra.cloud/v2/message/134486</id>
         <link href="https://cap-xml.prd.defra.cloud/v2/message/134486"/>
         <updated>2026-11-27T09:11:17.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[122WAC954]]></title>
-        <id>https://cap-xml.prd.defra.cloud/v2/message/134482</id>
-        <link href="https://cap-xml.prd.defra.cloud/v2/message/134482"/>
-        <updated>2026-11-27T08:35:52.000Z</updated>
     </entry>
 </feed>
